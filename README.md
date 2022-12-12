@@ -12,8 +12,8 @@ Repository for the final project for the "Communication networks : protocols and
 
 ## TODO
 - envoi TCP peer-to-peer
-  - - serveur
-  - - aknowledgment
+  - serveur
+  - aknowledgment
 
 - chemin
   --aléatoire
