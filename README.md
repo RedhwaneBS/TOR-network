@@ -21,7 +21,7 @@ Repository for the final project for the "Communication networks : protocols and
 
 
 
--encryptage
+- encryptage
   --tout le monde a accès aux clés publiques de tout le monde
   --handshake après avoir déterminé le chemin
   --envoi de clés
