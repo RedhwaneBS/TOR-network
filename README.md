@@ -11,11 +11,11 @@ Repository for the final project for the "Communication networks : protocols and
 * * *
 
 ## TODO
--envoi TCP peer-to-peer
-  --serveur
-  --aknowledgment
+- envoi TCP peer-to-peer
+  - - serveur
+  - - aknowledgment
 
--chemin
+- chemin
   --aléatoire
   --optimisé
 
@@ -31,7 +31,7 @@ Repository for the final project for the "Communication networks : protocols and
     --séparer les headers
 
 
--serveur de connexion
+- serveur de connexion
   --mot de passe et vérification
 
 
