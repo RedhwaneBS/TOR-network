@@ -16,23 +16,23 @@ Repository for the final project for the "Communication networks : protocols and
   - aknowledgment
 
 - chemin
-  --aléatoire
-  --optimisé
+  - aléatoire
+  - optimisé
 
 
 
 - encryptage
-  --tout le monde a accès aux clés publiques de tout le monde
-  --handshake après avoir déterminé le chemin
-  --envoi de clés
-  --encrypter dans chaque node
-    --séparer les headers
-  --décryptage dans chaque node
-    --séparer les headers
+  - tout le monde a accès aux clés publiques de tout le monde
+  - handshake après avoir déterminé le chemin
+  - envoi de clés
+  - encrypter dans chaque node
+    - séparer les headers
+  - décryptage dans chaque node
+    - séparer les headers
 
 
 - serveur de connexion
-  --mot de passe et vérification
+  - mot de passe et vérification
 
 
 
