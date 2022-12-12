@@ -10,11 +10,32 @@ Repository for the final project for the "Communication networks : protocols and
 
 * * *
 
-## Sous-titre
+## TODO
+-envoi TCP peer-to-peer
+  --serveur
+  --aknowledgment
 
-- point 1
-- point 2
-  - point 2.1
+-chemin
+  --aléatoire
+  --optimisé
+
+
+
+-encryptage
+  --tout le monde a accès aux clés publiques de tout le monde
+  --handshake après avoir déterminé le chemin
+  --envoi de clés
+  --encrypter dans chaque node
+    --séparer les headers
+  --décryptage dans chaque node
+    --séparer les headers
+
+
+-serveur de connexion
+  --mot de passe et vérification
+
+
+
 
 ## Assumptions
 
