@@ -2,11 +2,11 @@ import sys
 import time
 sys.path.insert(0, '..') # Import the files where the modules are located
 
-from myTORNode import myTORNode
+from TORClient import TORClient
 
-node_1 = myTORNode("127.0.0.1", 8001, 1)
-node_2 = myTORNode("127.0.0.1", 8002, 2)
-node_3 = myTORNode("127.0.0.1", 8003, 3)
+node_1 = TORClient("127.0.0.1", 8001, 1)
+node_2 = TORClient("127.0.0.1", 8002, 2)
+node_3 = TORClient("127.0.0.1", 8003, 3)
 
 time.sleep(1)
 
