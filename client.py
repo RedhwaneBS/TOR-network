@@ -1,40 +1,57 @@
-# this file contains the definition of the client class
+# the aim of this file is to create a node of a TOR network that can communicate with other nodes
+
+from p2pnetwork.node import Node
+from TORClient import TORClient
+import sys
+import time
 
 
-from twisted.internet import reactor
-from twisted.internet.protocol import DatagramProtocol
-from random import randint
+# get the arguments from the command line
+host = sys.argv[1]
+port = int(sys.argv[2])
+id = sys.argv[3]
+
+# create a node and start it
+node = TORClient(host, port, id)
+node.start()
 
 
-class Client(DatagramProtocol):
-    def __init__(self,host,port):
-        if host == "localhost":
-            host = "127.0.0.1"
-        self.id = host, port
-        self.adress = None
-        self.server = "127.0.0.1", 9999
-        print("Working on id: ", self.id)
+debug = False
+node.debug = debug
 
-    def startProtocol(self):
-        self.transport.write("ready".encode("utf-8"), self.server)
+# connect to the server node
 
-    def datagramReceived(self, datagram, addr):
-        datagram = datagram.decode("utf-8")
-
-        if addr == self.server:
-            print("Choose a client  from these\n", datagram)
-            self.adress = input("Write host"), int(input("write port"))
-            reactor.callInThread(self.send_message)
-        else:
-            print(addr, ":", datagram)
-
-    def send_message(self):
-        while True:
-            self.transport.write(input(":::").encode("utf-8"), self.adress)
+node.connect_with_node("127.0.0.1", 9999)
 
 
-if __name__ == "__main__":
-    port = randint(1000, 5000)
-    reactor.listenUDP(port, Client('localhost', port))
-    reactor.run()
+# ask the user to connect le host and port of the node to connect with
+writing_host = input("Give a host to connect to: ")
+if writing_host != "None":
+    writing_port = int(input("Give a port to connect to: "))
+    node.connect_with_node(writing_host, writing_port)
 
+
+# send a message to the connected nodes
+node.send_to_nodes("message: Hi there! I am node " + id)
+# node.send_to_node("message: Hi there !",n) #n is the node to send the message to
+
+''' 
+    ask the user a message to send to the connected nodes 
+    or to reconnect with another node 
+    or to stop the node
+'''
+
+message = ""
+while (message != "exit"):
+    if (message == "reconnect"):
+        writing_host = input("Give a host to connect to: ")
+        writing_port = int(input("Give a port to connect to: "))
+        node.connect_with_node(writing_host, writing_port)
+        message = ""
+    else:
+        message = input("Give a message to send: ")
+        node.send_to_nodes(message)
+print(node.nodes_inbound)
+print(node.nodes_outbound)
+node.stop()
+print("End test")
