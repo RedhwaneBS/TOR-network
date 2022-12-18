@@ -4,19 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79272349-3a6c-4781-8c96-f4a8a65dca9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TORServer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myTORNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/TORClient.py" afterDir="false" />
+    <list default="true" id="79272349-3a6c-4781-8c96-f4a8a65dca9e" name="Changes" comment="Merge with Peer-to-peer_network">
+      <change afterPath="$PROJECT_DIR$/ChallengeResponseVerification.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RSA.py" beforeDir="false" afterPath="$PROJECT_DIR$/RSA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RSAFiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/RSAFiles.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="peer-to-peer_network" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -25,6 +32,19 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="347a2052-ba72-40ed-919f-7f6d072b1112" />
+        <option name="url" value="https://github.com/RedhwaneBS/TOR-network.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -56,8 +76,8 @@
       <recent name="C:\Users\Medion\PycharmProjects\TOR-network" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.RSAFiles">
-    <configuration name="DHKeyExchange" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.ChallengeResponseVerification">
+    <configuration name="ChallengeResponseVerification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TOR-network" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -65,12 +85,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\Medion\AppData\Roaming\JetBrains\PyCharm2022.3\scratches\DHKeyExchange.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ChallengeResponseVerification.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -124,6 +144,7 @@
       <method v="2" />
     </configuration>
     <configuration name="client" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+      <module name="TOR-network" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -135,10 +156,9 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/client.py" />
-      <option name="PARAMETERS" value="127.0.0.1 5001 1" />
+      <option name="PARAMETERS" value="127.0.0.1 501 1002" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -169,19 +189,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.ChallengeResponseVerification" />
       <item itemvalue="Python.RSA" />
       <item itemvalue="Python.RSAFiles" />
-      <item itemvalue="Python.DHKeyExchange" />
       <item itemvalue="Python.client" />
       <item itemvalue="Python.server" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ChallengeResponseVerification" />
         <item itemvalue="Python.RSAFiles" />
         <item itemvalue="Python.RSA" />
-        <item itemvalue="Python.client" />
-        <item itemvalue="Python.DHKeyExchange" />
         <item itemvalue="Python.server" />
+        <item itemvalue="Python.client" />
       </list>
     </recent_temporary>
   </component>
@@ -196,6 +216,8 @@
       <workItem from="1670836336033" duration="5377000" />
       <workItem from="1670955166053" duration="6911000" />
       <workItem from="1671011859440" duration="3019000" />
+      <workItem from="1671310406214" duration="1824000" />
+      <workItem from="1671365210745" duration="16848000" />
     </task>
     <task id="LOCAL-00001" summary="TODO list">
       <created>1670841619008</created>
@@ -246,7 +268,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670967836278</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Merge with Peer-to-peer_network">
+      <created>1671141376795</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1671141376795</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,13 +307,15 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="TODO list" />
     <MESSAGE value="Diffie-Hellman Key Exchange" />
-    <option name="LAST_COMMIT_MESSAGE" value="Diffie-Hellman Key Exchange" />
+    <MESSAGE value="Merge with Peer-to-peer_network" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge with Peer-to-peer_network" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/TOR_network$client.coverage" NAME="client Coverage Results" MODIFIED="1670837062640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR_network$client.coverage" NAME="client Coverage Results" MODIFIED="1671314061506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR_network$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1670962850126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
-    <SUITE FILE_PATH="coverage/TOR_network$server.coverage" NAME="server Coverage Results" MODIFIED="1670836617515" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TOR_network$RSAFiles.coverage" NAME="RSAFiles Coverage Results" MODIFIED="1671141286953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TOR_network$RSA.coverage" NAME="RSA Coverage Results" MODIFIED="1671141265153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR_network$server.coverage" NAME="server Coverage Results" MODIFIED="1671370602095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR_network$RSAFiles.coverage" NAME="RSAFiles Coverage Results" MODIFIED="1671394957699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR_network$ChallengeResponseVerification.coverage" NAME="ChallengeResponseVerification Coverage Results" MODIFIED="1671402006236" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR_network$RSA.coverage" NAME="RSA Coverage Results" MODIFIED="1671380307307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

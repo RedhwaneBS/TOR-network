@@ -1,43 +1,41 @@
-import rsa
-# https://pypi.org/project/rsa/  pip install rsa
-# https://stuvel.eu/python-rsa-doc/usage.html#working-with-big-files
-
-# Create a new pair of keys
-(publicKey, privateKey) = rsa.newkeys(512)
-
-"""
-Load keys from a file
-rsa.PrivateKey.load_pkcs1()
-rsa.PublicKey.load_pkcs1()
-with open('private.pem', mode='rb') as privatefile:
-    keydata = privatefile.read()
-    privkey = rsa.PrivateKey.load_pkcs1(keydata)
-"""
-
-# Generation of a key pair
-# TODO Share the public key.
-# RSA -> done such that Alice knows that it is really Bob’s
-(bob_pub, bob_priv) = rsa.newkeys(512)
-
-# Message to be sent, to encode it in UTF-8.\
-# The RSA module only operates on bytes, and not on strings.
-message = 'hello Bob!'.encode('utf8')
+from Cryptem import Crypt, Encrypt, Encryptor, EncryptFile
+# pip install Cryptem
+# https://pypi.org/project/Cryptem/
 
 
-# Encryption of the message with public key
-# TODO Send the encrypted message.
-crypto = rsa.encrypt(message, bob_pub)
+# TODO Single - Session Asymmetric Encryption(public - key and private - key):
+
+#Communication Receiver:
+crypt = Crypt()  # create Crypt object with new random public and private keys
+public_key = crypt.public_key  # read public key
+
+crypt2 = Crypt()  # create Crypt object with new random public and private keys
+public_key2 = crypt2.public_key  # read public key
+
+# TODO Give public_key(the public key) to Sender.
+
+#Communication Sender / Encryptor:
+encryptor = Encryptor(public_key)  # crete Encryptor object with Receiver's public key
+cipher = encryptor.Encrypt("Hello there!".encode('utf-8'))  # encrypt a message
+
+encryptor2 = Encryptor(public_key2)  # crete Encryptor object with Receiver's public key
+cipher2 = encryptor2.Encrypt(cipher)  # encrypt a message
 
 
-# Reception of the message
-# Decryption with private key.
-message = rsa.decrypt(crypto, bob_priv)
-print(message.decode('utf8'))
+# TODO Transmit cipher to Receiver.
 
-#Since Bob kept his private key private, Alice can be sure that he is the only one who can read the message.\
-# Bob does not know for sure that it was Alice that sent the message, since she didn’t sign it.
+# Communication Receiver:
+plaintext2 = crypt2.Decrypt(cipher2)  # decrypt message
+plaintext = crypt.Decrypt(cipher).decode('utf-8')  # decrypt message
 
-#RSA can only encrypt messages that are smaller than the key.\
-# A couple of bytes are lost on random padding, and the rest is available for the message itself.\
-# For example, a 512-bit key can encode a 53-byte message (512 bit = 64 bytes,\
-# 11 bytes are used for random padding and other stuff).
+print(plaintext)
+
+
+
+
+
+
+
+
+
+
