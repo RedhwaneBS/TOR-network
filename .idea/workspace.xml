@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79272349-3a6c-4781-8c96-f4a8a65dca9e" name="Changes" comment="Chain encryption for strings messages with IPs">
+    <list default="true" id="79272349-3a6c-4781-8c96-f4a8a65dca9e" name="Changes" comment="Chain encryption for files but no IPs nor headers">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ELECH417_TorProject_2223.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/ELECH417_TorProject_2223.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RSAFiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/RSAFiles.py" afterDir="false" />
@@ -75,7 +75,7 @@
       <recent name="C:\Users\Medion\PycharmProjects\TOR-network" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.RSAFilesNoHeader">
+  <component name="RunManager" selected="Python.RSAFiles">
     <configuration name="ChallengeResponseVerification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TOR-network" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -195,8 +195,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.RSAFilesNoHeader" />
         <item itemvalue="Python.RSAFiles" />
+        <item itemvalue="Python.RSAFilesNoHeader" />
         <item itemvalue="Python.RSA" />
         <item itemvalue="Python.ChallengeResponseVerification" />
         <item itemvalue="Python.server" />
@@ -215,7 +215,7 @@
       <workItem from="1670955166053" duration="6911000" />
       <workItem from="1671011859440" duration="3019000" />
       <workItem from="1671310406214" duration="1824000" />
-      <workItem from="1671365210745" duration="39945000" />
+      <workItem from="1671365210745" duration="42044000" />
     </task>
     <task id="LOCAL-00001" summary="TODO list">
       <created>1670841619008</created>
@@ -287,7 +287,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671450104656</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Chain encryption for files but no IPs nor headers">
+      <created>1671466070251</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1671466070251</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Chain encryption for files but no IPs nor headers">
+      <created>1671466166350</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1671466166350</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -322,14 +336,16 @@
     <MESSAGE value="Merge with Peer-to-peer_network" />
     <MESSAGE value="Chain encryption without headers" />
     <MESSAGE value="Chain encryption for strings messages with IPs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Chain encryption for strings messages with IPs" />
+    <MESSAGE value="Chain encryption for files but no IPs nor headers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Chain encryption for files but no IPs nor headers" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TOR_network$client.coverage" NAME="client Coverage Results" MODIFIED="1671314061506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR_network$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1670962850126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
     <SUITE FILE_PATH="coverage/TOR_network$server.coverage" NAME="server Coverage Results" MODIFIED="1671370602095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TOR_network$RSAFiles.coverage" NAME="RSAFiles Coverage Results" MODIFIED="1671465858431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR_network$RSAFiles.coverage" NAME="RSAFiles Coverage Results" MODIFIED="1671471159255" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR_network$ChallengeResponseVerification.coverage" NAME="ChallengeResponseVerification Coverage Results" MODIFIED="1671437856604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR_network$RSAFilesNoHeader.coverage" NAME="RSAFilesNoHeader Coverage Results" MODIFIED="1671466283706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR_network$RSA.coverage" NAME="RSA Coverage Results" MODIFIED="1671455888722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
