@@ -1,4 +1,5 @@
 from Cryptem import Crypt, Encrypt, Encryptor, EncryptFile
+import re
 # pip install Cryptem
 # https://pypi.org/project/Cryptem/
 
@@ -20,39 +21,68 @@ crypt2 = Crypt()  # create Crypt object with new random public and private keys
 public_key2 = crypt2.public_key  # read public key
 
 
+listKeys = [public_key]#, public_key2]
+listCrypts = [crypt2]#, crypt]
+
 # TODO Give public_key(the public key) to Sender.
-"""
-#Communication Sender / Encryptor:
-path_to_file = ".\\ELECH417_TorProject_2223.pdf"
-path_to_save_encrypted_file = ".\\ELECH417_TorProject_2223_2.pdf"
-encryptor = Encryptor(public_key)  # create Encryptor object with Receiver's public key
-cipher = encryptor.EncryptFile(path_to_file, path_to_save_encrypted_file)  # encrypt file
 
+listIP = ['127.0.0.1']#, '127.0.0.2']
+
+def addHeaderToFile(header,path):
+    header = bytes(header, 'utf-8')
+
+    with open(path, 'rb') as file:
+        plain_data = file.read()
+
+    encrypted_data = header + plain_data
+
+    with open(path, 'wb') as file:
+        file.write(encrypted_data)
+
+    return path
+
+def encryptFileTOR(pathToFile, PathToEncryptedFile, i):
+    encryptor = Encryptor(listKeys[i])  # crete Encryptor object with Receiver's public key
+    encryptor.EncryptFile(pathToFile, PathToEncryptedFile)  # encrypt a message
+
+
+#Communication Sender / Encryptor:
+
+path_to_file = ".\\ELECH417_TorProject_2223.pdf"
+
+for i in range(len(listKeys)):
+    newPath = ".\\ELECH417_TorProject_2223_" + str(i) + ".pdf"
+    #path_to_file = addHeaderToFile(listIP[i] + "###", path_to_file)
+    encryptFileTOR(path_to_file, newPath, i)
+    path_to_file = newPath
 
 # TODO Transmit the encrypted file to Receiver.
 
-# Communication Receiver:
-path_to_encrypted_file = ".\\ELECH417_TorProject_2223_2.pdf"
-path_to_decrypted_file = ".\\ELECH417_TorProject_2223_3.pdf"
-plaintext = crypt.DecryptFile(path_to_encrypted_file, path_to_decrypted_file)  # decrypt file
+def popIP(path):
+    plain_data = ""
+    with open(path, 'r+b') as file:
+        plain_data = file.read()
+        ipMatch = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', plain_data)  # search for an ip address
+        ip = ipMatch.group(0).decode('utf8')  # extract the ip & in string
+        ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}###', plain_data) # separate the ip address from the payload
+        ipMatch2 = ipMatch[1] # keep the payload
+        file.write(ipMatch2)
+    return (ip, path)
 
-"""
-#Communication Sender / Encryptor:
-path_to_file = ".\\ELECH417_TorProject_2223.pdf"
-path_to_save_encrypted_file = ".\\ELECH417_TorProject_2223_2.pdf"
-path_to_save_encrypted_file2 = ".\\ELECH417_TorProject_2223_25.pdf"
-encryptor = Encryptor(public_key)  # create Encryptor object with Receiver's public key
-encryptor2 = Encryptor(public_key2)  # create Encryptor object with Receiver's public key
-cipher = encryptor.EncryptFile(path_to_file, path_to_save_encrypted_file)  # encrypt file
-cipher2 = encryptor2.EncryptFile(path_to_save_encrypted_file, path_to_save_encrypted_file2)  # encrypt file
-
-
-# TODO Transmit the encrypted file to Receiver.
 
 # Communication Receiver:
-path_to_encrypted_file = ".\\ELECH417_TorProject_2223_25.pdf"
-path_to_decrypted_file = ".\\ELECH417_TorProject_2223_3.pdf"
-path_to_decrypted_file2 = ".\\ELECH417_TorProject_2223_4.pdf"
-plaintext = crypt2.DecryptFile(path_to_encrypted_file, path_to_decrypted_file)  # decrypt file
-plaintext2 = crypt.DecryptFile(path_to_decrypted_file, path_to_decrypted_file2)  # decrypt file
+path_to_encrypted_file = ".\\ELECH417_TorProject_2223_1.pdf"
+path_to_decrypted_file = ".\\ELECH417_TorProject_2223_0.pdf"
+path_to_decrypted_file2 = ".\\ELECH417_TorProject_2223_00.pdf"
+
+#crypt2.DecryptFile(path_to_encrypted_file, path_to_decrypted_file)  # decrypt file
+
+#(ip, path_to_decrypted_file) = popIP(path_to_decrypted_file)
+#print(ip)
+#print('Here')
+
+crypt.DecryptFile(path_to_decrypted_file, path_to_decrypted_file2)  # decrypt file
+
+(ip, ipMatch) = popIP(path_to_decrypted_file2)
+print(ip)
 
