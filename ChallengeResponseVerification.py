@@ -1,5 +1,3 @@
-import hashlib
-
 import rsa
 # https://pypi.org/project/rsa/  pip install rsa
 # https://stuvel.eu/python-rsa-doc/usage.html#working-with-big-files
@@ -9,6 +7,7 @@ from diffiehellman import DiffieHellman
 #pip install py-diffie-hellman
 #https://pypi.org/project/py-diffie-hellman/
 
+import hashlib
 
 hashGen = hashlib.sha256()
 
