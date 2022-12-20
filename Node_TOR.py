@@ -24,9 +24,9 @@ class Node_TOR:
         while True:
             data = new_connexion_sock.recv(1024).decode()
             print(data)
-            ip, result = data.split("//")
-            port, message = result.split(" ")
-            port=int(port)
+            ip, result = data.split("//", 1)
+            port, message = result.split(" ", 1)
+            port = int(port)
             print("ip: " + ip + " port: " + str(port) + " message: " + message)
             if not data:
                 break
