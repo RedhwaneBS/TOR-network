@@ -51,6 +51,7 @@ while (message != "exit"):
     else:
         message = input("Give a message to send: ")
         node.send_to_nodes(message)
+        node.send_to_node(message, node.nodes_outbound[0])
 print(node.nodes_inbound)
 print(node.nodes_outbound)
 node.stop()
