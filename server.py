@@ -18,6 +18,7 @@ print("press CTRL+C to stop")
 try:
     while True:
         time.sleep(1)
+        node.send_to_node("message: Hi there !", node.nodes_outbound[0])
 except KeyboardInterrupt:
     print('interrupted!')
 

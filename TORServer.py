@@ -8,6 +8,7 @@ class TORServer(Node):
         print("TORServer: Started")
 
     def node_message(self, node, data):
+        print("client: (" + self.id + ") from " + node.id + ": " + str(data))
         print("client: (" + self.id + "): " + node.id + " sent " + data)
 
     ##when a  new node is connected send the list of nodes to the new node

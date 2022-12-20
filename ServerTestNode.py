@@ -10,7 +10,7 @@ import socket, time, string
 import sqlite3
 import random
 
-from Crypto.Cipher import AES
+#from Crypto.Cipher import AES
 
 from TORServer import TORServer
 
@@ -120,7 +120,6 @@ def authentification(s, connection, client_address, username, password, loginOrR
 
 
 def main():
-
     global server
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('127.0.0.1', 17093))
