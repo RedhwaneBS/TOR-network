@@ -3,7 +3,7 @@ import socket, time
 import getpass
 import hashlib
 
-#from Crypto.Cipher import AES
+from Crypto.Cipher import AES
 
 
 def connect(HostIp, Port):
@@ -66,8 +66,8 @@ def main():
             random_token = random_token.strip('\n')
             print("Random token: ", random_token)
             ciphertext = random_token
-            #obj = AES.new(random_token, AES.MODE_CBC, 'This is an IV456')
-            #ciphertext = obj.encrypt(password)
+            obj = AES.new(random_token, AES.MODE_CBC, 'This is an IV456')
+            ciphertext = obj.encrypt(password)
             write(ciphertext)
             print('cipher sent')
             auth_stat = receive()
