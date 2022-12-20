@@ -2,7 +2,7 @@
 class Contact:
 
     #Creation of a new contact
-    def __init__(self,port,name="",ip='localhost'):
+    def __init__(self,port,ip='localhost',name=""):
 
             self.name = name
             self.ip = ip

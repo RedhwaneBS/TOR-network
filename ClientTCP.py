@@ -2,10 +2,7 @@ import socket
 import threading
 from Contact import Contact
 from Contact_list import Contact_list
-import sys
 
-#This class is the client side of the application
-port = int(sys.argv[1])
 
 class ClientTCP:
 
@@ -19,14 +16,13 @@ class ClientTCP:
     conenxions = []
 
     
-    def new_contact(self,ip,port,name):
-
-        new_contact = Contact(ip,port,name)
+    def new_contact(self,tuple_contact):
+        new_contact = Contact(int(tuple_contact[0]),tuple_contact[1],tuple_contact[2])
         self.contact_list.append(new_contact)
-        print(name + " has been added to your contacts!")
+        print(tuple_contact[2] + " has been added to your contacts!")
 
 
-    def __handle_input_data(self,new_connexion_sock):
+    def __handle_input_data(self,new_connexion_sock,new_connexion_ip):
         while True:
             data = new_connexion_sock.recv(1024).decode()
             if not data:
@@ -41,7 +37,7 @@ class ClientTCP:
             #New connexion
             new_connexion_sock, new_connexion_ip = self.input_socket.accept()
             #Thread creation
-            new_connexion_thread = threading.Thread(target=self.__handle_input_data,args=(new_connexion_sock))
+            new_connexion_thread = threading.Thread(target=self.__handle_input_data,args=(new_connexion_sock,new_connexion_ip))
             new_connexion_thread.start()
 
             
@@ -88,7 +84,7 @@ class ClientTCP:
         else:
             friend_port = 5000
 
-        self.contact_list.append(Contact(friend_port,"Friend",'localhost'))
+        self.contact_list.append(Contact(friend_port,'localhost',"Friend"))
         self.input_socket.bind((self.personal_ip, self.personal_port))
         receive_thread = threading.Thread(target=self.__receive_data)
         receive_thread.start()
@@ -97,6 +93,3 @@ class ClientTCP:
         send_thread = threading.Thread(target=self.__send_data)
         send_thread.start()
 
-
-client = ClientTCP('localhost', port)
-client.start()
