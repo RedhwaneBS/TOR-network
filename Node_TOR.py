@@ -13,7 +13,7 @@ class Node_TOR(Node):
         port, message = result.split(" ", 1)
         port = int(port)
         print("ip: " + ip + " port: " + str(port) + " message: " + message)
-        self.send_by_ip_port(ip, port, message)
+        self.send(ip, port, message)
 
 
     # Allow to stop the program by typing "stop" in the console

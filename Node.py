@@ -24,13 +24,8 @@ class Node:
         new_connexion_sock.close()
 
 
-    # Send data to another peer/node by ip and port
-    def send_by_ip_port(self, ip, port, data):
-        self.__send(ip, port, data)
-
-
     # Send data to another peer/node
-    def __send(self, ip, port, data):
+    def send(self, ip, port, data):
         output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         output_socket.connect((ip, port))
         output_socket.send(data.encode())

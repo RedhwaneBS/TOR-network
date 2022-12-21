@@ -31,8 +31,7 @@ class ClientTCP(Node):
 
     # add a contact to the contact list
     def new_contact(self, tuple_contact):
-        new_contact = Contact(
-            int(tuple_contact[0]), tuple_contact[1], tuple_contact[2])
+        new_contact = Contact(int(tuple_contact[0]), tuple_contact[1], tuple_contact[2])
         self.contact_list.append(new_contact)
         print(tuple_contact[2] + " has been added to your contacts!")
 
@@ -42,28 +41,45 @@ class ClientTCP(Node):
         print(data)
 
 
-    # Send data to another contact
-    def __send_by_contact(self, contact, data):
-         self.__send(contact.ip,contact.port,data.encode())
-
-
-    # Take input to send data to another contact
+    # Parse the input to send data to another contact
     def take_input(self):
+        
         while self.run:
+            head_type = 0
+            send_message = False
             message = input()
-            message_with_path_header = self.create_message(self.randomiser(self.list_of_nodes), message)
-            print(message_with_path_header)
-            parsed_message = self.__parse_message(message_with_path_header)
-            if "//" in parsed_message[0]:
-                ip, port = parsed_message[0].split("//")
-                self.send_by_ip_port(ip, int(port), parsed_message[1])
-            else:
-                contact = self.contact_list.find_by_name(parsed_message[0])
-                if contact != None:
-                    self.__send_by_contact(contact, parsed_message[1])
-                else:
-                    print("Contact not found")
+            head,data = self.__parse_message(message)
+            head_parsed = head.split("//")
+            if head_parsed != None:
+                head_type = len(head_parsed)
 
+            if head_type == 1:
+                if head in self.contact_list.get_list_of_names():
+                    contact = self.contact_list.get_contact_by_name(head)
+                    message = f"{contact.ip}//{contact.port} "  + data
+                    send_message = True
+
+                elif head == "add":
+                    tuple_contact = data.split(" ")
+                    self.new_contact(tuple_contact)
+
+                else:
+                    print(head + " is not in your contact list or is an ivalid input") 
+                    print("Please enter a valid input or add the contact to your contact list using the command 'add' [port] [ip] [name]")
+            elif head_type != 2:
+                print("Invalid input header")
+                print("Please enter an input following the scheme ip//port message or contact_name message")
+                print("You can add a contact to your contact list using the command 'add' [port] [ip] [name]")
+            elif head_type == 2:
+                send_message = True
+
+            if send_message:
+                message_with_path_header = self.create_message(self.randomiser(self.list_of_nodes), message)
+                print(message_with_path_header)
+                parsed_message = self.__parse_message(message_with_path_header)
+                ip, port = parsed_message[0].split("//")
+                self.send(ip, int(port), parsed_message[1])
+            
 
     # When user enter a message he must do it with the structure "destination_name message"
     # This function parse the message to separate the name of the destination and the message content

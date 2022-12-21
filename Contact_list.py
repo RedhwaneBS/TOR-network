@@ -25,27 +25,34 @@ class Contact_list:
         self.contacts.remove(contact)
 
     #remove a contact
-    def remove_by_name(self,name):
-        contact = self.find_by_name(name)
+    def remove_contact_by_name(self,name):
+        contact = self.get_contact_by_name(name)
         self.contacts.remove(contact)
 
     #Find a contact by its name in the list
-    def find_by_name(self,name):
+    def get_contact_by_name(self,name):
         for contact in self.contacts:
             if contact.name == name:
                 return contact
         return None
 
     #Find a contact by its ip in the list
-    def find_by_ip(self,ip):
+    def get_contact_by_ip(self,ip):
         for contact in self.contacts:
             if contact.ip == ip:
                 return contact
         return None
 
     #Find a contact by its ip in the list
-    def find_by_ip_port(self,ip,port):
+    def get_contact_by_ip_port(self,ip,port):
         for contact in self.contacts:
             if contact.ip == ip and contact.port == port:
                 return contact
         return None
+    
+    #Return a list of contacts names
+    def get_list_of_names(self):
+        names = []
+        for contact in self.contacts:
+            names.append(contact.name)
+        return names
