@@ -7,12 +7,6 @@ import re
 
 # TODO File Encryption:
 
-# RSA encryption rather inefficient with big quantities of data,
-# the Crypt and Encryptor classes have functions that implement
-# symmetric AES encryption.The secret AES key is encrypted
-# with asymmetric elliptic curve cryptography and embedded into the file,
-# so that the user can use the file encryption functionality in exactly the same way.
-
 # Sender / Encryptor:
 
 crypt = Crypt()  # create Crypt object with new random public and private keys
@@ -21,13 +15,16 @@ public_key = crypt.public_key  # read public key
 crypt2 = Crypt()  # create Crypt object with new random public and private keys
 public_key2 = crypt2.public_key  # read public key
 
+crypt3 = Crypt()  # create Crypt object with new random public and private keys
+public_key3 = crypt3.public_key  # read public key
 
-listKeys = [public_key, public_key2]
-listCrypts = [crypt2, crypt]
+
+listKeys = [public_key, public_key2, public_key3]
+listCrypts = [crypt3, crypt2, crypt]
 
 # TODO Give public_key(the public key) to Sender.
 
-listIP = ['127.0.0.1', '127.0.0.2']
+listIP = ['127.0.0.1', '127.0.0.2', '127.0.0.3']
 
 def addHeaderToFile(header,path):
     header = bytes(header, 'utf-8')
@@ -73,16 +70,25 @@ def popIP(path):
 
 
 # Communication Receiver:
-path_to_encrypted_file = ".\\ELECH417_TorProject_2223_1.pdf"
-path_to_decrypted_file = ".\\ELECH417_TorProject_2223_0.pdf"
-path_to_decrypted_file2 = ".\\ELECH417_TorProject_2223_00.pdf"
+path_to_encrypted_file = ".\\ELECH417_TorProject_2223_2.pdf"
+#path_to_decrypted_file = ".\\ELECH417_TorProject_2223_0.pdf"
+#path_to_decrypted_file2 = ".\\ELECH417_TorProject_2223_00.pdf"
 
+
+for i in range(len(listKeys)):
+    j = len(listKeys)-i
+    path_to_decrypted_file = ".\\ELECH417_TorProject_2223_" + str(j) + ".pdf"
+    listCrypts[i].DecryptFile(path_to_encrypted_file, path_to_decrypted_file)  # decrypt file
+    (ip, path_to_encrypted_file) = popIP(path_to_decrypted_file)
+    print(ip)
+
+"""
 crypt2.DecryptFile(path_to_encrypted_file, path_to_decrypted_file)  # decrypt file
-
 (ip, path_to_decrypted_file) = popIP(path_to_decrypted_file)
 print(ip)
 
 crypt.DecryptFile(path_to_decrypted_file, path_to_decrypted_file2)  # decrypt file
 (ip, ipMatch) = popIP(path_to_decrypted_file2)
 print(ip)
+"""
 
