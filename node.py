@@ -13,18 +13,21 @@ class Node:
     # Boolean to stop the program
     run = True
 
+
     # Thread that receive data
     def __handle_input_data(self, new_connexion_sock, new_connexion_ip):
         while self.run:
-            data = new_connexion_sock.recv(1024).decode()
+            data = new_connexion_sock.recv(4096).decode()
             if not data:
                 break
             self.manage_data(data)
         new_connexion_sock.close()
 
+
     # Send data to another peer/node by ip and port
     def send_by_ip_port(self, ip, port, data):
         self.__send(ip, port, data)
+
 
     # Send data to another peer/node
     def __send(self, ip, port, data):
@@ -63,13 +66,18 @@ class Node:
     def take_input(self):
         raise NotImplementedError
 
+    # Thread that shar coordonates from nodes in its node list
+    def sharing_node(self):
+        pass
+
     # Start the node
     def start(self):
 
         self.input_socket.bind((self.personal_ip, self.personal_port))
-
+        print('Node started ' + " ip : " + self.personal_ip + " port : " + str(self.personal_port))
         receive_thread = threading.Thread(target=self.__receive_data)
         receive_thread.start()
 
         receive_thread = threading.Thread(target=self.__send_data)
         receive_thread.start()
+
