@@ -1,15 +1,11 @@
-import socket
-import threading
-from Contact import Contact
-from Contact_list import Contact_list
-from ClientTCP import ClientTCP
+from Node_TOR import Node_TOR
 import sys
 import csv
 
 ip = sys.argv[1]
 port = int(sys.argv[2])
 
-client = ClientTCP(ip, port)
+client = Node_TOR(ip, port)
 client.start()
 
 

@@ -8,6 +8,9 @@
 /dataSources.local.xml
 /misc.xml
 /modules.xml
+/inspectionProfiles
+/vcs.xml
+/TOR4.iml
 /TOR-network.iml
 /vcs.xml
 /inspectionProfiles
