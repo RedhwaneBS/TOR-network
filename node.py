@@ -1,22 +1,66 @@
-from Node_TOR import Node_TOR
-import sys
-import csv
+import socket
+import threading
 
-ip = sys.argv[1]
-port = int(sys.argv[2])
+class Node:
+    
+    def __init__(self, personal_ip, personal_port):
+        self.personal_ip = personal_ip
+        self.personal_port = personal_port
+        self.input_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-client = Node_TOR(ip, port)
-client.start()
+    run = True
+
+    def __handle_input_data(self, new_connexion_sock, new_connexion_ip):
+        while self.run:
+            data = new_connexion_sock.recv(1024).decode()
+            if not data:
+                break
+            self.__manage_data(data)
+        new_connexion_sock.close()
+
+    def __manage_data(self, data):
+        raise NotImplementedError
+
+    def __send_by_ip_port(self, ip, port, data):
+        self.__send(ip, port, data)
+
+    def __send(self, ip, port, data):
+        output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        output_socket.connect((ip, port))
+        output_socket.send(data.encode())
+        output_socket.close()
 
 
-# Ouverture du fichier en mode lecture
-with open('Contacts.csv', 'r') as fichier_csv:
-    # Initialisation du gestionnaire de fichier CSV
-    gestionnaire_csv = csv.reader(fichier_csv, delimiter=',')
-    # Lecture des lignes du fichier CSV
-    for ligne in gestionnaire_csv:
-        # Conversion de chaque élément de la ligne en entier (sauf le prénom)
-        ligne = [int(x) if x.isdigit() else x for x in ligne]
-        # Stockage de la ligne dans un tuple
-        tuple_ligne = tuple(ligne)
-        client.new_contact(tuple_ligne)
+    def __receive_data(self):
+        # Queue for connection
+        self.input_socket.listen(10)
+        while self.run:
+            # New connexion
+            new_connexion_sock, new_connexion_ip = self.input_socket.accept()
+            # Thread creation
+            new_connexion_thread = threading.Thread(
+                target=self.__handle_input_data, args=(new_connexion_sock, new_connexion_ip))
+            new_connexion_thread.start()
+
+
+    # Thread that send data to another peer
+    def __send_data(self):
+        try:
+            self.__take_input()
+        except KeyboardInterrupt:
+            self.run = False
+            self.input_socket.close()
+            print('interrupted!')
+    
+    def __take_input(self):
+        raise NotImplementedError
+
+    def start(self):
+
+        self.input_socket.bind((self.personal_ip, self.personal_port))
+
+        receive_thread = threading.Thread(target=self.__receive_data)
+        receive_thread.start()
+
+        receive_thread = threading.Thread(target=self.__send_data)
+        receive_thread.start()

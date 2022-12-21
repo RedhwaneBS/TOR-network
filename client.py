@@ -1,5 +1,3 @@
-import socket
-import threading
 from Contact import Contact
 from Contact_list import Contact_list
 from ClientTCP import ClientTCP
