@@ -4,13 +4,16 @@ import threading
 # Node that can receive data from other nodes and send data to other nodes
 class Node:
     
+    # Constructor
     def __init__(self, personal_ip, personal_port):
         self.personal_ip = personal_ip
         self.personal_port = personal_port
         self.input_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+    # Boolean to stop the program
     run = True
 
+    # Thread that receive data
     def __handle_input_data(self, new_connexion_sock, new_connexion_ip):
         while self.run:
             data = new_connexion_sock.recv(1024).decode()
@@ -19,16 +22,18 @@ class Node:
             self.manage_data(data)
         new_connexion_sock.close()
 
+    # Send data to another peer/node by ip and port
     def send_by_ip_port(self, ip, port, data):
         self.__send(ip, port, data)
 
+    # Send data to another peer/node
     def __send(self, ip, port, data):
         output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         output_socket.connect((ip, port))
         output_socket.send(data.encode())
         output_socket.close()
 
-
+    # Thread that receive data from other peers simultaneously
     def __receive_data(self):
         # Queue for connection
         self.input_socket.listen(10)
@@ -40,8 +45,10 @@ class Node:
                 target=self.__handle_input_data, args=(new_connexion_sock, new_connexion_ip))
             new_connexion_thread.start()
 
+    # Manage data received
     def manage_data(self, data):
         raise NotImplementedError
+
 
     # Thread that send data to another peer
     def __send_data(self):
@@ -52,9 +59,11 @@ class Node:
             self.input_socket.close()
             print('interrupted!')
     
+    # Take input from user
     def take_input(self):
         raise NotImplementedError
 
+    # Start the node
     def start(self):
 
         self.input_socket.bind((self.personal_ip, self.personal_port))
