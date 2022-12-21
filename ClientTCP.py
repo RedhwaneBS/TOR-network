@@ -1,19 +1,33 @@
 import socket
 import threading
-import time
+import random
 from Contact import Contact
 from Contact_list import Contact_list
-
 
 class ClientTCP:
     def __init__(self, personal_ip, personal_port):
         self.personal_ip = personal_ip
         self.personal_port = personal_port
         self.input_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
     bool = True
     initial_contacts_from_server = Contact_list()
     contact_list = Contact_list()
-    conenxions = []
+    list_of_nodes = [("127.0.0.1", 5003), ("127.0.0.1", 5004), ("127.0.0.1", 5005), ("127.0.0.1", 5006), ("127.0.0.1", 5007), ("127.0.0.1", 5008), ("127.0.0.1", 5009)]
+
+    def create_message(self, path, message):
+        nodes_string = ""
+        for node in path:
+            nodes_string += f"{node[0]}//{node[1]} "
+        return f"{nodes_string}{message}"
+
+    def randomiser(self, liste):
+        # tire un nombre au hasard entre 0 et la longueur de la liste
+        nombre = random.randint(1, len(liste) - 1)
+
+        # retourne ce nombre d'éléments de la liste
+        new_liste = random.sample(liste, nombre)
+        return new_liste
 
     def new_contact(self, tuple_contact):
         new_contact = Contact(
@@ -27,7 +41,6 @@ class ClientTCP:
             if not data:
                 break
             print(data)
-
         new_connexion_sock.close()
 
     def __receive_data(self):
@@ -40,7 +53,6 @@ class ClientTCP:
             new_connexion_thread = threading.Thread(
                 target=self.__handle_input_data, args=(new_connexion_sock, new_connexion_ip))
             new_connexion_thread.start()
-
 
     def __send_by_contact(self, contact, data):
         output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -57,12 +69,13 @@ class ClientTCP:
         output_socket.close()
 
     # Thread that send data to another peer
-
     def __send_data(self):
         try:
             while True:
                 message = input()
-                parsed_message = self.__parse_message(message)
+                data = self.create_message(self.randomiser(self.list_of_nodes), message)
+                print(data)
+                parsed_message = self.__parse_message(data)
                 if "//" in parsed_message[0]:
                     ip, port = parsed_message[0].split("//")
                     self.__send_by_ip_port(ip, int(port), parsed_message[1])
@@ -76,7 +89,6 @@ class ClientTCP:
             self.bool = False
             self.input_socket.close()
             print('interrupted!')
-
 
     # When user enter a message he must do it with the structure "destination_name message"
     # This function parse the message to separate the name of the destination and the message content
@@ -100,3 +112,5 @@ class ClientTCP:
 
         send_thread = threading.Thread(target=self.__send_data)
         send_thread.start()
+
+

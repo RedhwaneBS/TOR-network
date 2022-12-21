@@ -3,7 +3,6 @@ import threading
 from Contact import Contact
 from Contact_list import Contact_list
 
-
 class Node_TOR:
 
     def __init__(self, personal_ip, personal_port):

@@ -1,7 +1,3 @@
-import socket
-import threading
-from Contact import Contact
-from Contact_list import Contact_list
 from ClientTCP import ClientTCP
 import sys
 import csv
@@ -13,7 +9,6 @@ client = ClientTCP(ip, port)
 client.start()
 
 
-# Ouverture du fichier en mode lecture
 with open('Contacts.csv', 'r') as fichier_csv:
     # Initialisation du gestionnaire de fichier CSV
     gestionnaire_csv = csv.reader(fichier_csv, delimiter=',')
