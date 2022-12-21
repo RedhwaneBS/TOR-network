@@ -3,7 +3,8 @@ import socket, time
 import getpass
 import hashlib
 
-#from Crypto.Cipher import AES
+from Crypto.Cipher import AES
+import rsa
 
 
 def connect(HostIp, Port):
@@ -41,7 +42,7 @@ def PasswordCreate():
 
 
 def main():
-    connect('127.0.0.1', 17093)
+    connect('127.0.0.1', 17092)
     print(receive())
     username = input("Enter your username: ")
     write(username)
@@ -62,14 +63,17 @@ def main():
             print("Username or password is incorrect")
             close()
         else:
-            random_token = receive()
-            random_token = random_token.strip('\n')
-            print("Random token: ", random_token)
-            ciphertext = random_token
-            #obj = AES.new(random_token, AES.MODE_CBC, 'This is an IV456')
-            #ciphertext = obj.encrypt(password)
-            write(ciphertext)
-            print('cipher sent')
+            # Ancienne partie token
+            random_token = s.recv(1024)
+            print("Random token :", random_token)
+            print("password : ", password)
+            nonce = s.recv(1024)
+            obj = AES.new(random_token, AES.MODE_EAX, nonce=nonce)
+            ciphertext, tag = obj.encrypt_and_digest(password.encode())
+
+            # Envoi du token chiffré
+            s.send(ciphertext)
+            print('cipher sent : ', ciphertext)
             auth_stat = receive()
             auth_stat = auth_stat.strip('\n')
             print('auth_stat :', auth_stat)
@@ -78,6 +82,6 @@ def main():
 
 
 if __name__ == '__main__':
-    while True :
+    while True:
         print("--- New connection ---")
         main()

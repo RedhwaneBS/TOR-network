@@ -1,19 +1,17 @@
 #!/usr/bin/env python
 
-# Code highly
+# Code highly inspired from this github : github.com/abhishekkrthakur/isear/blob/master/server.py
 #
 #
 #
+import rsa
 import select, socket, sys
 from queue import *
 import socket, time, string
 import sqlite3
 import random
 
-#from Crypto.Cipher import AES
-
-import TORServer
-
+from Crypto.Cipher import AES
 
 # things to begin with
 userNameList = []
@@ -95,16 +93,25 @@ def authentification(s, connection, client_address, username, password, loginOrR
         if existence == '0':
             print('existence sent')
 
-            random_token = random_token_generator()
+            # Ancienne partie token
+            # random_token = random_token_generator()
+            random_token = b'Sixteen byte key'
             print('random :', random_token)
-            write(random_token, connection)
+            connection.send(random_token)
             print('random_token sent')
-            ciphertext = random_token
-            #obj = AES.new(random_token, AES.MODE_CBC, 'This is an IV456')
-            #ciphertext = obj.encrypt(password)
-            read_encrypted_hash = receive(connection).strip('\n')
+            print("password : ", password)
+
+            obj = AES.new(random_token, AES.MODE_EAX)
+            ciphertext, tag = obj.encrypt_and_digest(password.encode())
+            nonce = obj.nonce
+            connection.send(nonce)
+            print('ciphertext :', ciphertext)
+
+            # Déchiffrement du message token
+            read_encrypted_hash = connection.recv(1024)
             print('read_encrypted_hash :', read_encrypted_hash)
-            read_encrypted_hash = read_encrypted_hash.strip('\n')
+            #read_encrypted_hash = read_encrypted_hash.strip('\n')
+
             if read_encrypted_hash == ciphertext:
                 print("Authentication successful!")
                 print(read_encrypted_hash, ciphertext)
@@ -122,7 +129,7 @@ def authentification(s, connection, client_address, username, password, loginOrR
 def main():
     global server
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('127.0.0.1', 17093))
+    server.bind(('127.0.0.1', 17092))
     server.listen(5)
     inputsSocketList = [server]
     outputsSocketList = []

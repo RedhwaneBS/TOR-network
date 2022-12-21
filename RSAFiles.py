@@ -1,3 +1,4 @@
+#!/bin/env python
 from Cryptem import Crypt, Encrypt, Encryptor, EncryptFile
 import re
 # pip install Cryptem
