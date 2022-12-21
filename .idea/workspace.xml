@@ -265,13 +265,13 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.ClientAuthent" />
-      <item itemvalue="Python.ServerTest" />
       <item itemvalue="Python.RSAFilesNoHeader" />
+      <item itemvalue="Python.ServerTest" />
+      <item itemvalue="Python.ClientAuthent" />
       <item itemvalue="Python.ExampleClient" />
       <item itemvalue="Python.ExampleServer" />
-      <item itemvalue="Python.ChallengeResponseVerification" />
       <item itemvalue="Python.RSA" />
+      <item itemvalue="Python.ChallengeResponseVerification" />
       <item itemvalue="Python.RSAFiles" />
     </list>
     <recent_temporary>
