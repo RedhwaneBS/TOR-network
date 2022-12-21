@@ -42,3 +42,10 @@ class Contact_list:
             if contact.ip == ip:
                 return contact
         return None
+
+    #Find a contact by its ip in the list
+    def find_by_ip_port(self,ip,port):
+        for contact in self.contacts:
+            if contact.ip == ip and contact.port == port:
+                return contact
+        return None

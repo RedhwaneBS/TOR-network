@@ -1,11 +1,11 @@
 import socket
 import threading
-import time
 from Contact import Contact
 from Contact_list import Contact_list
 
 
-class ClientTCP:
+class Node_TOR:
+
     def __init__(self, personal_ip, personal_port):
         self.personal_ip = personal_ip
         self.personal_port = personal_port
@@ -13,11 +13,10 @@ class ClientTCP:
     bool = True
     initial_contacts_from_server = Contact_list()
     contact_list = Contact_list()
-    conenxions = []
+    connexions = []
 
     def new_contact(self, tuple_contact):
-        new_contact = Contact(
-            int(tuple_contact[0]), tuple_contact[1], tuple_contact[2])
+        new_contact = Contact(int(tuple_contact[0]), tuple_contact[1], tuple_contact[2])
         self.contact_list.append(new_contact)
         print(tuple_contact[2] + " has been added to your contacts!")
 
@@ -27,6 +26,12 @@ class ClientTCP:
             if not data:
                 break
             print(data)
+            ip, result = data.split("//", 1)
+            port, message = result.split(" ", 1)
+            port = int(port)
+            print("ip: " + ip + " port: " + str(port) + " message: " + message)
+            self.__send_by_ip_port(ip, port, message)
+            ##print(data)
 
         new_connexion_sock.close()
 
@@ -37,27 +42,26 @@ class ClientTCP:
             # New connexion
             new_connexion_sock, new_connexion_ip = self.input_socket.accept()
             # Thread creation
-            new_connexion_thread = threading.Thread(
-                target=self.__handle_input_data, args=(new_connexion_sock, new_connexion_ip))
+            new_connexion_thread = threading.Thread(target=self.__handle_input_data,
+                                                    args=(new_connexion_sock, new_connexion_ip))
             new_connexion_thread.start()
-
 
     def __send_by_contact(self, contact, data):
         output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.__send(contact.ip, contact.port, data, output_socket)
+        output_socket.connect((contact.ip, contact.port))
+        output_socket.send(data.encode())
 
     def __send_by_ip_port(self, ip, port, data):
         output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.__send(ip, port, data, output_socket)
 
-    # send to somone
     def __send(self, ip, port, data, output_socket):
         output_socket.connect((ip, port))
         output_socket.send(data.encode())
         output_socket.close()
 
-    # Thread that send data to another peer
 
+    # Thread that send data to another peer
     def __send_data(self):
         try:
             while True:
@@ -73,9 +77,8 @@ class ClientTCP:
                     else:
                         print("Contact not found")
         except KeyboardInterrupt:
-            self.bool = False
+            print("Closing connection")
             self.input_socket.close()
-            print('interrupted!')
 
 
     # When user enter a message he must do it with the structure "destination_name message"
