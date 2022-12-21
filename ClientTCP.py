@@ -4,34 +4,37 @@ from Contact import Contact
 from Contact_list import Contact_list
 from Node import Node
 
-
+# TCP client that can send and reveive data via a Tor network
 class ClientTCP(Node):
-    
+
+    # List of contacts
     contact_list = Contact_list()
 
+    # add a contact to the contact list
     def new_contact(self, tuple_contact):
         new_contact = Contact(
             int(tuple_contact[0]), tuple_contact[1], tuple_contact[2])
         self.contact_list.append(new_contact)
         print(tuple_contact[2] + " has been added to your contacts!")
 
-
-    def __manage_data(self, data):
+    # Print the data received
+    def manage_data(self, data):
         print(data)
+
 
     # Send data to another contact
     def __send_by_contact(self, contact, data):
-        self.__send(contact.ip,contact.port,data.encode())
+         self.__send(contact.ip,contact.port,data.encode())
+
 
     # Take input to send data to another contact
-    def __take_input(self):
-        super.__take_input(self)
+    def take_input(self):
         while self.run:
             message = input()
             parsed_message = self.__parse_message(message)
             if "//" in parsed_message[0]:
                 ip, port = parsed_message[0].split("//")
-                self.__send_by_ip_port(ip, int(port), parsed_message[1])
+                self.send_by_ip_port(ip, int(port), parsed_message[1])
             else:
                 contact = self.contact_list.find_by_name(parsed_message[0])
                 if contact != None:

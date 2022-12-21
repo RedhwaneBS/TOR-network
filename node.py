@@ -1,6 +1,7 @@
 import socket
 import threading
 
+# Node that can receive data from other nodes and send data to other nodes
 class Node:
     
     def __init__(self, personal_ip, personal_port):
@@ -15,13 +16,10 @@ class Node:
             data = new_connexion_sock.recv(1024).decode()
             if not data:
                 break
-            self.__manage_data(data)
+            self.manage_data(data)
         new_connexion_sock.close()
 
-    def __manage_data(self, data):
-        raise NotImplementedError
-
-    def __send_by_ip_port(self, ip, port, data):
+    def send_by_ip_port(self, ip, port, data):
         self.__send(ip, port, data)
 
     def __send(self, ip, port, data):
@@ -42,17 +40,19 @@ class Node:
                 target=self.__handle_input_data, args=(new_connexion_sock, new_connexion_ip))
             new_connexion_thread.start()
 
+    def manage_data(self, data):
+        raise NotImplementedError
 
     # Thread that send data to another peer
     def __send_data(self):
         try:
-            self.__take_input()
+            self.take_input()
         except KeyboardInterrupt:
             self.run = False
             self.input_socket.close()
             print('interrupted!')
     
-    def __take_input(self):
+    def take_input(self):
         raise NotImplementedError
 
     def start(self):

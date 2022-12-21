@@ -2,19 +2,20 @@ import socket
 import threading
 from Node import Node
 
+# TOR node that can receive data from other nodes and send data to other nodes/peers
 class Node_TOR(Node):
     
+    # Send data to another peer/node
+    def manage_data(self, data):
+        print(data)
+        ip, result = data.split("//", 1)
+        port, message = result.split(" ", 1)
+        port = int(port)
+        print("ip: " + ip + " port: " + str(port) + " message: " + message)
+        self.send_by_ip_port(ip, port, message)
 
-    def __manage_data(self,data):
-            print(data)
-            ip, result = data.split("//", 1)
-            port, message = result.split(" ", 1)
-            port = int(port)
-            print("ip: " + ip + " port: " + str(port) + " message: " + message)
-            self.__send_by_ip_port(ip, port, message)
-
-
-    def __take_input(self):
+    # Allow to stop the program by typing "stop" in the console
+    def take_input(self):
         while self.run:
             message = input()
             print(message)
