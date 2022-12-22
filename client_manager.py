@@ -1,6 +1,6 @@
 from Contact import Contact
 from Contact_list import Contact_list
-from ClientTCP import ClientTCP
+from Client_TOR import ClientTCP
 import sys
 import csv
 

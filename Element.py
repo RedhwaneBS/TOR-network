@@ -31,6 +31,7 @@ class Node:
         output_socket.send(data)
         output_socket.close()
 
+
     # Thread that receive data from other peers simultaneously
     def __receive_data(self):
         # Queue for connection
@@ -40,7 +41,7 @@ class Node:
             new_connexion_sock, new_connexion_ip = self.input_socket.accept()
             # Thread creation
             new_connexion_thread = threading.Thread(
-                target=self.__handle_input_data, args=(new_connexion_sock, new_connexion_ip))
+                target=self.__handle_input_data_from_server, args=(new_connexion_sock, new_connexion_ip))
             new_connexion_thread.start()
 
     # Manage data received

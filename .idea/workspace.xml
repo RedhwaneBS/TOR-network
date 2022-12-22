@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79272349-3a6c-4781-8c96-f4a8a65dca9e" name="Changes" comment="Testing server">
+    <list default="true" id="79272349-3a6c-4781-8c96-f4a8a65dca9e" name="Changes" comment="Renaming">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientTCP.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientTCP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client_TOR.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client_TOR.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Element.py" beforeDir="false" afterPath="$PROJECT_DIR$/Element.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Node_TOR.py" beforeDir="false" afterPath="$PROJECT_DIR$/Node_TOR.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServerTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/client_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.bat" beforeDir="false" afterPath="$PROJECT_DIR$/test.bat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,28 +84,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.ServerTest">
-    <configuration name="ChallengeResponseVerification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="TOR-network" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ChallengeResponseVerification.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="ClientAuthent" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TOR-network" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -258,23 +241,45 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="server" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TOR-network" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.RSAFilesNoHeader" />
       <item itemvalue="Python.ServerTest" />
       <item itemvalue="Python.ClientAuthent" />
+      <item itemvalue="Python.server" />
       <item itemvalue="Python.ClientTCP" />
       <item itemvalue="Python.ExampleClient" />
       <item itemvalue="Python.ExampleServer" />
       <item itemvalue="Python.RSA" />
-      <item itemvalue="Python.ChallengeResponseVerification" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.server" />
         <item itemvalue="Python.ClientTCP" />
         <item itemvalue="Python.RSA" />
         <item itemvalue="Python.ExampleClient" />
         <item itemvalue="Python.ExampleServer" />
-        <item itemvalue="Python.ChallengeResponseVerification" />
       </list>
     </recent_temporary>
   </component>
@@ -298,7 +303,9 @@
       <workItem from="1671632843167" duration="3629000" />
       <workItem from="1671638253449" duration="1815000" />
       <workItem from="1671705324957" duration="8036000" />
-      <workItem from="1671713588842" duration="11008000" />
+      <workItem from="1671713588842" duration="22945000" />
+      <workItem from="1671741239782" duration="2267000" />
+      <workItem from="1671743540238" duration="8790000" />
     </task>
     <task id="LOCAL-00001" summary="TODO list">
       <created>1670841619008</created>
@@ -398,7 +405,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671721915668</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Renaming">
+      <created>1671725037789</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1671725037789</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Renaming">
+      <created>1671725096545</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1671725096545</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -424,6 +445,11 @@
             </State>
           </value>
         </entry>
+        <entry key="f1ff16f6-b379-4ab4-a00d-1be68db79462">
+          <value>
+            <State />
+          </value>
+        </entry>
       </map>
     </option>
   </component>
@@ -436,13 +462,14 @@
     <MESSAGE value="Chain encryption for files but no IPs nor headers" />
     <MESSAGE value="Chain encryption for files with IPs" />
     <MESSAGE value="Testing server" />
-    <option name="LAST_COMMIT_MESSAGE" value="Testing server" />
+    <MESSAGE value="Renaming" />
+    <option name="LAST_COMMIT_MESSAGE" value="Renaming" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TOR_network$ChallengeResponseVerification.coverage" NAME="ChallengeResponseVerification Coverage Results" MODIFIED="1671437856604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR4$ClientAuthent.coverage" NAME="ClientAuthent Coverage Results" MODIFIED="1671706629491" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR4$RSA.coverage" NAME="RSA Coverage Results" MODIFIED="1671716796811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TOR4$ServerTest.coverage" NAME="ServerTest Coverage Results" MODIFIED="1671724864619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR4$ServerTest.coverage" NAME="ServerTest Coverage Results" MODIFIED="1671752324635" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR_network$RSAFiles.coverage" NAME="RSAFiles Coverage Results" MODIFIED="1671471159255" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR4$ExampleClient.coverage" NAME="ExampleClient Coverage Results" MODIFIED="1671632906221" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR_network$server.coverage" NAME="server Coverage Results" MODIFIED="1671370602095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -450,6 +477,7 @@
     <SUITE FILE_PATH="coverage/TOR4$ChallengeResponseVerification.coverage" NAME="ChallengeResponseVerification Coverage Results" MODIFIED="1671534657672" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR4$main.coverage" NAME="main Coverage Results" MODIFIED="1671640579324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR_network$RSA.coverage" NAME="RSA Coverage Results" MODIFIED="1671455888722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TOR4$server.coverage" NAME="server Coverage Results" MODIFIED="1671742832321" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR_network$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1670962850126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
     <SUITE FILE_PATH="coverage/TOR4$RSAFiles.coverage" NAME="RSAFiles Coverage Results" MODIFIED="1671534648265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/TOR4$ExampleServer.coverage" NAME="ExampleServer Coverage Results" MODIFIED="1671632881839" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
