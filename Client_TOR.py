@@ -20,6 +20,7 @@ class Client_TOR(Element):
         for node in path:
             print(nodes_string)
             nodes_string += f"{node[0]}//{node[1]} "
+            #encrypt
         nodes_string+=message
         print(nodes_string)
         return nodes_string
@@ -60,7 +61,7 @@ class Client_TOR(Element):
             if head_type == 1:
                 if head in self.contact_list.get_list_of_names():
                     contact = self.contact_list.get_contact_by_name(head)
-                    message = f"{contact.ip}//{contact.port} "  + data
+                    message = f"{contact.ip}//{contact.port} " + data
                     send_message = True
 
                 elif head == "add":
@@ -82,7 +83,7 @@ class Client_TOR(Element):
                 print(message_with_path_header)
                 parsed_message = self.__parse_message(message_with_path_header)
                 ip, port = parsed_message[0].split("//")
-                self.send(ip, int(port), parsed_message[1])
+                self.send(ip, int(port), parsed_message[1].encode())
             
 
     # When user enter a message he must do it with the structure "destination_name message"

@@ -31,7 +31,7 @@ class Element:
     def send(self, ip, port, data):
         output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         output_socket.connect((ip, port))
-        output_socket.send(data.encode())
+        output_socket.send(data)
         output_socket.close()
 
     # Thread that receive data from other peers simultaneously
