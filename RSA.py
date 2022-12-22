@@ -3,67 +3,29 @@ import re
 # pip install Cryptem
 # https://pypi.org/project/Cryptem/
 
-listIP = ['127.0.0.1', '127.0.0.2', '127.0.0.3']
-
-
-# TODO Single - Session Asymmetric Encryption(public - key and private - key):
-
-#Communication Receiver:
-crypt = Crypt()  # create Crypt object with new random public and private keys
-public_key = crypt.public_key  # read public key
-
-crypt2 = Crypt()  # create Crypt object with new random public and private keys
-public_key2 = crypt2.public_key  # read public key
-
-crypt3 = Crypt()  # create Crypt object with new random public and private keys
-public_key3 = crypt3.public_key  # read public key
-
-listKeys = [public_key, public_key2, public_key3]
-listCrypts = [crypt3, crypt2, crypt]
-
-# TODO Give public_key(the public key) to Sender.
-
-
-#Communication Sender / Encryptor:
-
-def encryptTheMessage(message, i):
-    if i == 0:
+def encrypt_the_message(message, node):
+    if isinstance(message, str):
         message = message.encode('utf-8')
-    encryptor = Encryptor(listKeys[i])  # crete Encryptor object with Receiver's public key
-    cipher = encryptor.Encrypt(listIP[i].encode('utf8') +"###".encode('utf8')+ message)  # encrypt a message
+    encryptor = Encryptor(node[2]) # create Encryptor object with the node's public key
+    cipher = encryptor.Encrypt(message) # encrypt the message
+    header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
+    cipher = header + cipher
     return cipher
 
+def pop_header(plaintext):
+    headerInPlaintext = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext)  # search for a header
+    header = headerInPlaintext.group(0)  # extract the header
+    searchIP = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', header)
+    ip = searchIP.group(0)  # extract the header
+    port = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//', header)
+    port = port[1]  # extract the header
+    splitHeaderPlaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext, 1)  # separate the header from the payload
+    restPlaintext = splitHeaderPlaintext[1]  # keep the payload
+    return (ip, port, restPlaintext)
 
-message = "Hello there!"
-for i in range(len(listKeys)):
-    message = encryptTheMessage(message, i)
-
-
-# TODO Transmit cipher to Receiver.
-
-# Communication Receiver:
-
-def popIP(plaintext):
-    print('plaintext :', plaintext)
-    ipMatch = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', plaintext) #search for an ip address
-    ip = ipMatch.group(0).decode('utf8') #extract the ip & in string$
-    print('plaintext2 :', plaintext)
-    print('ip :', ip)
-    ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}###', plaintext) #separate the ip address from the payload
-    ipMatch = ipMatch[1] #keep the payload
-    return (ip, ipMatch)
-
-def decryptTheCipher(crypt, cipher):
+def decrypt_the_cipher(crypt, cipher):
     plaintext = crypt.Decrypt(cipher)  # decrypt message
-    (ip, ipMatch) = popIP(plaintext)
-    return (ip, ipMatch)
-
-for i in range(len(listKeys)):
-    (ip, message) = decryptTheCipher(listCrypts[i], message)
-    print(ip)
-
-messageDecrypted = message.decode('utf8')
-print(messageDecrypted)
+    return plaintext
 
 
 

@@ -3,6 +3,7 @@ import threading
 import Cryptem
 import os
 import re
+from RSA import decrypt_the_cipher
 
 # Node that can receive data from other nodes and send data to other nodes
 class Element:
@@ -22,12 +23,13 @@ class Element:
     # List of peers conncected to the network
     list_of_clients = []
 
-    # Thread that receive data
+    # Thread that receives data
     def __handle_input_data(self, new_connexion_sock, new_connexion_ip):
         while self.run:
             data = new_connexion_sock.recv(4096)
             if not data:
                 break
+            print(data)
             self.manage_data(data)
         new_connexion_sock.close()
 
@@ -39,7 +41,7 @@ class Element:
         output_socket.send(data)
         output_socket.close()
 
-    # Thread that receive data from other peers simultaneously
+    # Thread that receives data from other peers simultaneously
     def __receive_data(self):
         # Queue for connection
         self.input_socket.listen(10)
@@ -56,7 +58,7 @@ class Element:
         raise NotImplementedError
 
 
-    # Thread that send data to another peer
+    # Thread that sends data to another peer
     def __send_data(self):
         try:
             self.take_input()

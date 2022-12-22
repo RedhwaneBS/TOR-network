@@ -4,6 +4,8 @@ import pickle
 import random
 import time
 from Element import Element
+from RSA import decrypt_the_cipher, pop_header
+
 
 # TOR node that can receive data from other nodes and send data to other nodes/peers
 class Node_TOR(Element):
@@ -12,7 +14,10 @@ class Node_TOR(Element):
 
     # Resend data to the next node
     def manage_data(self, data):
-        ip, port, message = self.pop_header(data)
+        data = decrypt_the_cipher(self.crypt, data)
+        print(data)
+        #ip, port, message = self.pop_header(data)
+        (ip, port, message) = pop_header(data)
         ip = ip.decode()
         port = port.decode()
         # Special header 300.0.0.0//0 is for receiving a client coordinates
