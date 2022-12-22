@@ -71,7 +71,6 @@ class Client_TOR(Element):
                 body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
                 list_of_clients = body[1]  # extract the list of clients
                 self.list_of_clients += pickle.loads(list_of_clients)  # load the list of clients
-                print(self.list_of_clients)
         else:
             print(data)
 

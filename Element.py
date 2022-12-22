@@ -88,16 +88,3 @@ class Element:
         receive_thread = threading.Thread(target=self.__send_data)
         receive_thread.start()
 
-    # Parse the header
-    def pop_header(self,plaintext):
-        headerInPlaintext = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext)  # search for a header
-        header = headerInPlaintext.group(0)  # extract the header
-        searchIP = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', header)
-        ip = searchIP.group(0)  # extract the IP
-        port = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//', header)
-        port = port[1]  # extract the port
-        splitHeaderPlaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext,1)  # separate the header from the payload
-        restPlaintext = splitHeaderPlaintext[1]  # keep the payload
-        print("header: " , header , " ip: " ,ip , " port: " , port , " message: " , restPlaintext)
-        #print("header: " + header.decode() + " ip: " + ip.decode() + " port: " + port.decode() + " rest: " + restPlaintext.decode())
-        return (ip, port, restPlaintext)

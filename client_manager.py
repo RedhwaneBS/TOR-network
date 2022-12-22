@@ -16,7 +16,7 @@ data = [client.personal_ip, client.personal_port, client.crypt.public_key]
 with open('public_keys.csv', 'a', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(data)
-
+"""
 # Ouverture du fichier en mode lecture
 with open('Contacts.csv', 'r') as fichier_csv:
     # Initialisation of the CSV file manager
@@ -31,7 +31,7 @@ with open('Contacts.csv', 'r') as fichier_csv:
 
 
 time.sleep(5)
-"""
+""""
 with open('public_keys.csv', 'r') as fichier_csv:
     # Initialisation of the CSV file manager
     gestionnaire_csv = csv.reader(fichier_csv, delimiter=',')

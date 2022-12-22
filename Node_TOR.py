@@ -3,6 +3,7 @@ import threading
 import pickle
 import random
 import time
+import re
 from Element import Element
 from RSA import decrypt_the_cipher, pop_header
 
@@ -14,10 +15,15 @@ class Node_TOR(Element):
 
     # Resend data to the next node
     def manage_data(self, data):
-        data = decrypt_the_cipher(self.crypt, data)
+        header_test = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)
+
+        if header_test is None:
+            data = decrypt_the_cipher(self.crypt, data)
+
         print(data)
-        #ip, port, message = self.pop_header(data)
         (ip, port, message) = pop_header(data)
+
+        #ip, port, message = pop_header(data)
         ip = ip.decode()
         port = port.decode()
         # Special header 300.0.0.0//0 is for receiving a client coordinates
@@ -46,12 +52,6 @@ class Node_TOR(Element):
         socket_node_sharing.send("300.0.0.0//0 ".encode() + pickle.dumps(self.list_of_nodes))
         print("DONE")
         socket_node_sharing.close()
-
-    def encryption(self, data):
-        pass
-
-    def decryption(self, data):
-        pass
 
     # Allow to stop the program by typing "stop" in the console
     def take_input(self):

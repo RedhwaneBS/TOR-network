@@ -23,6 +23,8 @@ def pop_header(plaintext):
     restPlaintext = splitHeaderPlaintext[1]  # keep the payload
     return (ip, port, restPlaintext)
 
+
+
 def decrypt_the_cipher(crypt, cipher):
     plaintext = crypt.Decrypt(cipher)  # decrypt message
     return plaintext
