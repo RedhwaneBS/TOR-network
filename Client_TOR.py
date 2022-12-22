@@ -54,17 +54,19 @@ class Client_TOR(Element):
 
     # Print the data received
     def manage_data(self, data):
-        print("manage data")
         header_test = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
         if header_test != None: 
             header = header_test.group(0)  # extract the header
             if header.decode() == "300.0.0.0//0 ":
-                print("header == 300.0.0.0//0")
                 body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
                 list_of_nodes = body[1]  # extract the list of nodes
                 self.list_of_nodes = pickle.loads(list_of_nodes)  # load the list of nodes
                 print("List of nodes received")
-                print(self.list_of_nodes)
+            if header.decode() == "300.0.0.0//1 ":
+                body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+                list_of_clients = body[1]  # extract the list of clients
+                self.list_of_clients += pickle.loads(list_of_clients)  # load the list of clients
+                print(self.list_of_clients)
         else:
             print(data)
 
@@ -229,8 +231,8 @@ class Client_TOR(Element):
         return (ip, ipMatch)
 
 
-    def sharing_peers(self):
-        return super().sharing_peers()
+    def sharing_contacts(self):
+        return super().sharing_contacts()
     
     def connect_to_TOR(self):
         socket_entering_node = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

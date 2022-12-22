@@ -74,15 +74,6 @@ class Element:
     def take_input(self):
         raise NotImplementedError
 
-    # Thread that share coordonates from nodes in its node list
-    def sharing_peers(self, ip, port):
-        if self.list_of_clients != []:
-            share_list = ["AAAYYAAAAAA"]
-            for peer in self.list_of_clients:
-                share_list.append(peer)
-            sharing_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sharing_socket.connect((ip, port))
-            sharing_socket.send(str(share_list).encode())
 
     # Start the node
     def start(self):
