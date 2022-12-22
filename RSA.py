@@ -44,8 +44,11 @@ for i in range(len(listKeys)):
 # Communication Receiver:
 
 def popIP(plaintext):
+    print('plaintext :', plaintext)
     ipMatch = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', plaintext) #search for an ip address
-    ip = ipMatch.group(0).decode('utf8') #extract the ip & in string
+    ip = ipMatch.group(0).decode('utf8') #extract the ip & in string$
+    print('plaintext2 :', plaintext)
+    print('ip :', ip)
     ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}###', plaintext) #separate the ip address from the payload
     ipMatch = ipMatch[1] #keep the payload
     return (ip, ipMatch)

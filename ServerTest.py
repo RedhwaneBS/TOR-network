@@ -4,13 +4,9 @@
 #
 #
 #
-import rsa
 import select, socket, sys
-from queue import *
 import socket, time, string
-import sqlite3
 import random
-
 from Crypto.Cipher import AES
 
 # things to begin with
@@ -102,7 +98,7 @@ def authentification(s, connection, client_address, username, password, loginOrR
             print("password : ", password)
 
             obj = AES.new(random_token, AES.MODE_EAX)
-            ciphertext, tag = obj.encrypt_and_digest(password.encode())
+            ciphertext, tag = obj.encrypt_and_digest(password)
             nonce = obj.nonce
             connection.send(nonce)
             print('ciphertext :', ciphertext)
@@ -143,38 +139,16 @@ def main():
                 if connection:
                     inputsSocketList.append(connection)
                     write('Welcome to the server. Please type your username and password to login.', connection)
+                    print('first message', connection.recv(1024).decode())
                     username = receive(connection).strip('\n')
                     print(username)
-                    password = receive(connection).strip('\n')
+                    password = connection.recv(1024)
                     print(password)
                     write('is it for login or register?', connection)
                     loginOrRegister = receive(connection).strip('\n')
                     print(loginOrRegister)
                     authentification(s, connection, client_address, username, password, loginOrRegister)
                     inputsSocketList.remove(connection)
-                    # Start authentification
-            else:
-                data = receive(server)
-                # Resend data
-                if data:
-                    message_queues[s].put(data)
-                    if s not in outputsSocketList:
-                        outputsSocketList.append(s)
-                else:
-                    if s in outputsSocketList:
-                        outputsSocketList.remove(s)
-                    inputsSocketList.remove(s)
-                    s.close()
-                    del message_queues[s]
-
-        for s in writable:
-            break
-            try:
-                next_msg = message_queues[s].get_nowait()
-            except Empty:
-                outputsSocketList.remove(s)
-            else:
-                s.send(next_msg)
 
 
 if __name__ == '__main__':

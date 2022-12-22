@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import socket, time
 import getpass
 import hashlib
@@ -34,21 +35,25 @@ def close():
 
 
 def PasswordCreate():
-    return 'my password'
-    user_in = getpass.getpass()
-    password = hashlib.md5()
-    password.update(user_in.encode("utf-8"))
-    return password.hexdigest()
-
+    random_key = os.urandom(16)
+    return random_key
 
 def main():
     connect('127.0.0.1', 17092)
     print(receive())
     username = input("Enter your username: ")
     write(username)
-    password = PasswordCreate()
-    print("Password: " + password)
-    write(password)
+    if username in UsernameList:
+        print("Username already exists")
+        index = UsernameList.index(username)
+        password = PasswordList[index]
+    else:
+        password = PasswordCreate()
+        UsernameList.append(username)
+        PasswordList.append(password)
+
+    print("Password: ", password)
+    s.send(password)
     print(receive())
     option = input('Type 1 for login or 0 for register: ')
     write(option)
@@ -69,7 +74,7 @@ def main():
             print("password : ", password)
             nonce = s.recv(1024)
             obj = AES.new(random_token, AES.MODE_EAX, nonce=nonce)
-            ciphertext, tag = obj.encrypt_and_digest(password.encode())
+            ciphertext, tag = obj.encrypt_and_digest(password)
 
             # Envoi du token chiffré
             s.send(ciphertext)
@@ -82,6 +87,9 @@ def main():
 
 
 if __name__ == '__main__':
+
+    UsernameList = []
+    PasswordList = []
     while True:
         print("--- New connection ---")
         main()

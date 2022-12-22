@@ -17,7 +17,7 @@ class Node:
     # Thread that receive data
     def __handle_input_data(self, new_connexion_sock, new_connexion_ip):
         while self.run:
-            data = new_connexion_sock.recv(4096).decode()
+            data = new_connexion_sock.recv(4096)
             if not data:
                 break
             self.manage_data(data)
@@ -28,7 +28,7 @@ class Node:
     def send(self, ip, port, data):
         output_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         output_socket.connect((ip, port))
-        output_socket.send(data.encode())
+        output_socket.send(data)
         output_socket.close()
 
     # Thread that receive data from other peers simultaneously
