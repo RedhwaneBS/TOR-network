@@ -15,10 +15,10 @@ import re
 #Communication Sender / Encryptor:
 
 def encrypt_the_message(message, node):
-    if isinstance(message, str):
-        message = message.encode('utf-8')
-    encryptor = Encryptor(node[2])  # crete Encryptor object with Receiver's public key
-    cipher = encryptor.Encrypt(message)  # encrypt a message
+    encryptor = Encryptor(node[2]) # create Encryptor object with the node's public key
+    cipher = encryptor.Encrypt(message) # encrypt the message
+    header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
+    encrypted_message = header + cipher
     return cipher
 
 

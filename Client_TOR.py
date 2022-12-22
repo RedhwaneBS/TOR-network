@@ -10,7 +10,6 @@ from Contact_list import Contact_list
 from Element import Element
 from RSA import encrypt_the_message, pop_header
 import random
-from Cryptem import Crypt, Encrypt, Encryptor, EncryptFile
 
 
 # TCP client that can send and receive data via a Tor network
@@ -23,28 +22,20 @@ class Client_TOR(Element):
     list_of_nodes = []
 
 
-    # Creat a message with a path of nodes, form list_of_nodes = [('127.0.0.1', 5003, key), ('127.0.0.1', 5004, key)]
+    # Create a message with a path of nodes, form of list_of_nodes = [('127.0.0.1', 5003, key), ('127.0.0.1', 5004, key)]
     def create_message(self, path, message):
-        #nodes_string = ""
-        for node in path[::-1]:
-            print(node[0] + str(node[1]))
-            encryptor = Encryptor(node[2])
-            if isinstance(message, str):
-                message = message.encode('utf-8')
-            message1 = encryptor.Encrypt(message)
-            header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
-            message1 = header+message1
-            #nodes_string += f"{node[0]}//{node[1]} " #path with
-            print(message1)
-        return message1
+        if isinstance(message, str):
+            message = message.encode('utf-8')
 
-    # Return a random list of node to create a path
+        for node in path[::-1]:  # encryption from the destination to the first node of the path
+            cipher = encrypt_the_message(node, message)
+            print(cipher)
+        return cipher
+
+    # Return a random list of nodes to create a path
     def randomiser(self, liste):
-        # tire un nombre au hasard entre 0 et la longueur de la liste
-        nombre = random.randint(1, len(liste) - 1)
-
-        # retourne ce nombre d'éléments de la liste
-        new_liste = random.sample(liste, nombre)
+        nombre = random.randint(1, len(liste) - 1) # draw a random number between 0 & length of the list
+        new_liste = random.sample(liste, nombre) # return this number of elements of the list
         return new_liste
 
     # add a contact to the contact list
@@ -80,7 +71,7 @@ class Client_TOR(Element):
                     self.new_contact(tuple_contact)
 
                 else:
-                    print(head + " is not in your contact list or is an ivalid input")
+                    print(head + " is not in your contact list or is an invalid input")
                     print(
                         "Please enter a valid input or add the contact to your contact list using the command 'add' [port] [ip] [name]")
             elif head_type != 2:
