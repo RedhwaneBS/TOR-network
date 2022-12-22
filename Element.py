@@ -29,7 +29,6 @@ class Element:
             data = new_connexion_sock.recv(4096)
             if not data:
                 break
-            print(data)
             self.manage_data(data)
         new_connexion_sock.close()
 

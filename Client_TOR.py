@@ -36,12 +36,10 @@ class Client_TOR(Element):
         if isinstance(message, str):
             message = message.encode('utf-8')
         for node in path[::-1]:     # encryption from the destination to the first node of the path
-            print(node[0] + str(node[1]))
             encryptor = Encryptor(node[2])
             cipher = encryptor.Encrypt(message)
             header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
             cipher = header+cipher
-            print(cipher)
         return cipher
 
 
@@ -72,11 +70,11 @@ class Client_TOR(Element):
                 list_of_clients = body[1]  # extract the list of clients
                 self.list_of_clients += pickle.loads(list_of_clients)  # load the list of clients
         else:
-            print(data)
+            print(data.decode())
+            pass
 
     # Parse the input to send data to another contact
     def take_input(self):
-
         while self.run:
             head_type = 0
             send_message = False
@@ -116,10 +114,9 @@ class Client_TOR(Element):
                         new_connexion_thread.start()
                 else:
                     message_with_path_header = self.create_message(self.randomiser(self.list_of_nodes), message)
-                    print('message :',message_with_path_header)
                     parsed_message = pop_header(message_with_path_header)
                     (ip, port, message) = parsed_message
-                    print('ip :',ip, 'port :',port)
+                    print('ip :',ip.decode(), 'port :',port.decode())
                     self.send(ip, int(port), message)
 
     # When user enter a message he must do it with the structure "destination_name message"
@@ -222,8 +219,6 @@ class Client_TOR(Element):
 
             self.close()
             self.run = False
-
-
 
 
 

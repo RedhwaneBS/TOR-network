@@ -20,7 +20,6 @@ class Node_TOR(Element):
         if header_test is None:
             data = decrypt_the_cipher(self.crypt, data)
 
-        print(data)
         (ip, port, message) = pop_header(data)
 
         #ip, port, message = pop_header(data)
@@ -42,7 +41,7 @@ class Node_TOR(Element):
             print("Clients shared")
         else:
             port = int(port)
-            print("ip: " + ip + " port: " + str(port) + " message: " + str(pickle.loads(message)))
+            print("ip: " + ip + " port: " + str(port) + " message: " + str(message.decode()))
             self.send(ip, port, message)
 
     # Send the list of nodes to a client
@@ -80,8 +79,6 @@ class Node_TOR(Element):
     def sharing_contacts_between_clients(self):
         while self.run:
             time.sleep(5)
-            print("Sharing contacts")
-            print(self.list_of_clients)
             if self.list_of_clients != []:
                 share_list = random.sample(self.list_of_clients,len(self.list_of_clients))
                 for client in share_list:
