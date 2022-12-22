@@ -3,30 +3,14 @@ import re
 # pip install Cryptem
 # https://pypi.org/project/Cryptem/
 
-
-
-# TODO Single - Session Asymmetric Encryption(public - key and private - key):
-
-#Communication Receiver:
-
-# TODO Give public_key(the public key) to Sender.
-
-
-#Communication Sender / Encryptor:
-
 def encrypt_the_message(message, node):
+    if isinstance(message, str):
+        message = message.encode('utf-8')
     encryptor = Encryptor(node[2]) # create Encryptor object with the node's public key
     cipher = encryptor.Encrypt(message) # encrypt the message
     header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
-    encrypted_message = header + cipher
+    cipher = header + cipher
     return cipher
-
-
-
-
-# TODO Transmit cipher to Receiver.
-
-# Communication Receiver:
 
 def pop_header(plaintext):
     headerInPlaintext = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext)  # search for a header

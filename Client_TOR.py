@@ -8,9 +8,9 @@ from Crypto.Cipher import AES
 from Contact import Contact
 from Contact_list import Contact_list
 from Element import Element
-from RSA import encrypt_the_message, pop_header
+from RSA import pop_header
 import random
-
+from Cryptem import Encryptor
 
 # TCP client that can send and receive data via a Tor network
 class Client_TOR(Element):
@@ -26,11 +26,15 @@ class Client_TOR(Element):
     def create_message(self, path, message):
         if isinstance(message, str):
             message = message.encode('utf-8')
-
-        for node in path[::-1]:  # encryption from the destination to the first node of the path
-            cipher = encrypt_the_message(node, message)
+        for node in path[::-1]:     # encryption from the destination to the first node of the path
+            print(node[0] + str(node[1]))
+            encryptor = Encryptor(node[2])
+            cipher = encryptor.Encrypt(message)
+            header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
+            cipher = header+cipher
             print(cipher)
         return cipher
+
 
     # Return a random list of nodes to create a path
     def randomiser(self, liste):

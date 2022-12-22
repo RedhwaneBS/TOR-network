@@ -20,7 +20,7 @@ class Element:
     list_of_nodes = []
 
 
-    # Thread that receive data
+    # Thread that receives data
     def __handle_input_data(self, new_connexion_sock, new_connexion_ip):
         while self.run:
             data = new_connexion_sock.recv(4096)
@@ -38,7 +38,7 @@ class Element:
         output_socket.send(data)
         output_socket.close()
 
-    # Thread that receive data from other peers simultaneously
+    # Thread that receives data from other peers simultaneously
     def __receive_data(self):
         # Queue for connection
         self.input_socket.listen(10)
@@ -55,7 +55,7 @@ class Element:
         raise NotImplementedError
 
 
-    # Thread that send data to another peer
+    # Thread that sends data to another peer
     def __send_data(self):
         try:
             self.take_input()
@@ -73,7 +73,7 @@ class Element:
     def take_input(self):
         raise NotImplementedError
 
-    # Thread that shar coordonates from nodes in its node list
+    # Thread that share coordinates from nodes in its node list
     def sharing_node(self):
         pass
 
