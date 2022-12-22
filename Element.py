@@ -58,6 +58,11 @@ class Element:
         try:
             self.take_input()
         except KeyboardInterrupt:
+            with open('public_keys.csv', 'w') as f:
+                f.write('')
+            self.run = False
+            self.input_socket.close()
+            print('interrupted!')
             self.run = False
             self.input_socket.close()
             print('interrupted!')
