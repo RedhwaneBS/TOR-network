@@ -20,10 +20,11 @@ class Element:
     # Thread that receive data
     def __handle_input_data(self, new_connexion_sock, new_connexion_ip):
         while self.run:
-            data = new_connexion_sock.recv(4096).decode()
+            data = new_connexion_sock.recv(4096)
             if not data:
                 break
-            self.manage_data(data)
+
+            self.manage_data(data.decode())
         new_connexion_sock.close()
 
 

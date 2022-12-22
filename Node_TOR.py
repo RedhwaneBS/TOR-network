@@ -12,7 +12,7 @@ class Node_TOR(Element):
         port, message = result.split(" ", 1)
         port = int(port)
         print("ip: " + ip + " port: " + str(port) + " message: " + message)
-        self.send(ip, port, message)
+        self.send(ip, port, message.encode())
 
     # Allow to stop the program by typing "stop" in the console
     def take_input(self):
