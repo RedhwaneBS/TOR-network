@@ -9,3 +9,5 @@ class Contact:
             self.ip = ip
             self.port = port
             self.public_key = Crypt().public_key
+
+

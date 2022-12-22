@@ -10,10 +10,11 @@ port = int(sys.argv[2])
 
 client = Client_TOR(ip, port)
 data = [client.personal_ip, client.personal_port, client.crypt.public_key]
+"""
 with open('public_keys.csv', 'a', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(data)
-
+"""
 # Ouverture du fichier en mode lecture
 with open('Contacts.csv', 'r') as fichier_csv:
     # Initialisation du gestionnaire de fichier CSV

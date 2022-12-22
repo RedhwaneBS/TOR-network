@@ -2,6 +2,8 @@ import re
 import socket
 import threading
 from Element import Element
+from RSA import decrypt_the_cipher, pop_header
+
 
 # TOR node that can receive data from other nodes and send data to other nodes/peers
 class Node_TOR(Element):
@@ -10,8 +12,9 @@ class Node_TOR(Element):
 
     # Resend data to the next node
     def manage_data(self, data):
+        data = decrypt_the_cipher(self.crypt, data)
         print(data)
-        ip, port, message = self.pop_header(data)
+        (ip, port, message) = pop_header(data)
         ip = ip.decode()
         port = port.decode()
         port = int(port)
@@ -33,16 +36,3 @@ class Node_TOR(Element):
                 print("Closing connection")
                 self.input_socket.close()
                 self.run = False
-
-    def pop_header(self,plaintext):
-        headerInPlaintext = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext)  # search for a header
-        header = headerInPlaintext.group(0)  # extract the header
-        searchIP = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', header)
-        ip = searchIP.group(0)  # extract the header
-        port = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//', header)
-        port = port[1]  # extract the header
-        splitHeaderPlaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext,1)  # separate the header from the payload
-        restPlaintext = splitHeaderPlaintext[1]  # keep the payload
-        print("header: " , header , " ip: " ,ip , " port: " , port , " message: " , restPlaintext)
-        print("header: " + header.decode() + " ip: " + ip.decode() + " port: " + port.decode() + " rest: " + restPlaintext.decode())
-        return (ip, port, restPlaintext)

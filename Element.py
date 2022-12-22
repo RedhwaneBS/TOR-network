@@ -2,6 +2,7 @@ import socket
 import threading
 import Cryptem
 import os
+from RSA import decrypt_the_cipher
 
 # Node that can receive data from other nodes and send data to other nodes
 class Element:
@@ -25,6 +26,7 @@ class Element:
             data = new_connexion_sock.recv(4096)
             if not data:
                 break
+            print(data)
             self.manage_data(data)
         new_connexion_sock.close()
 

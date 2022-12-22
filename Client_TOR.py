@@ -5,11 +5,12 @@ import random
 import re
 
 from Crypto.Cipher import AES
-
 from Contact import Contact
 from Contact_list import Contact_list
 from Element import Element
+from RSA import encrypt_the_message, pop_header
 import random
+from Cryptem import Crypt, Encrypt, Encryptor, EncryptFile
 
 
 # TCP client that can send and receive data via a Tor network
@@ -21,12 +22,21 @@ class Client_TOR(Element):
     # List of nodes coordinates
     list_of_nodes = []
 
-    # Creat a message with a path of nodes
+
+    # Creat a message with a path of nodes, form list_of_nodes = [('127.0.0.1', 5003, key), ('127.0.0.1', 5004, key)]
     def create_message(self, path, message):
-        nodes_string = ""
-        for node in path:
-            nodes_string += f"{node[0]}//{node[1]} "
-        return f"{nodes_string}{message}"
+        #nodes_string = ""
+        for node in path[::-1]:
+            print(node[0] + str(node[1]))
+            encryptor = Encryptor(node[2])
+            if isinstance(message, str):
+                message = message.encode('utf-8')
+            message1 = encryptor.Encrypt(message)
+            header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
+            message1 = header+message1
+            #nodes_string += f"{node[0]}//{node[1]} " #path with
+            print(message1)
+        return message1
 
     # Return a random list of node to create a path
     def randomiser(self, liste):
@@ -90,10 +100,10 @@ class Client_TOR(Element):
                 else:
                     message_with_path_header = self.create_message(self.randomiser(self.list_of_nodes), message)
                     print('message :',message_with_path_header)
-                    parsed_message = self.__parse_message(message_with_path_header)
-                    ip, port = parsed_message[0].split("//")
-                    print('ip :',ip, 'port :',port, 'data :',parsed_message[1])
-                    self.send(ip, int(port), parsed_message[1].encode())
+                    parsed_message = pop_header(message_with_path_header)
+                    (ip, port, message) = parsed_message
+                    print('ip :',ip, 'port :',port)
+                    self.send(ip, int(port), message)
 
     # When user enter a message he must do it with the structure "destination_name message"
     # This function parse the message to separate the name of the destination and the message content
@@ -188,13 +198,3 @@ class Client_TOR(Element):
 
             self.close()
             self.run = False
-
-    def popIP(self,plaintext):
-        print('plaintext :', plaintext)
-        ipMatch = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', plaintext)  # search for an ip address
-        ip = ipMatch.group(0).decode('utf8')  # extract the ip & in string$
-        print('plaintext2 :', plaintext)
-        print('ip :', ip)
-        ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}###',plaintext)  # separate the ip address from the payload
-        ipMatch = ipMatch[1]  # keep the payload
-        return (ip, ipMatch)
