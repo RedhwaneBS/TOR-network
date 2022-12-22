@@ -8,7 +8,7 @@ port = int(sys.argv[2])
 
 node = Node_TOR(ip, port)
 
-data= [node.personal_ip, node.personal_port, node.crypt.public_key]
+data = [node.personal_ip, node.personal_port, node.crypt.public_key]
 
 with open('data.csv', 'a', newline='') as csvfile:
     writer = csv.writer(csvfile)

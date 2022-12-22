@@ -26,7 +26,7 @@ listCrypts = [crypt5, crypt4, crypt3]
 #Communication Sender / Encryptor:
 
 def encrypt_the_message(message, i):
-    if isinstance(message, str):
+    if i == 0:
         message = message.encode('utf-8')
     encryptor = Encryptor(listKeys[i])  # crete Encryptor object with Receiver's public key
     cipher = encryptor.Encrypt(list_of_nodes[i][0].encode('utf8') + "//".encode('utf8') +
@@ -35,28 +35,31 @@ def encrypt_the_message(message, i):
 
 
 message = "Hello there!"
+print(message)
 for i in range(len(listKeys)):
     message = encrypt_the_message(message, i)
+    print(message)
 
 
 # TODO Transmit cipher to Receiver.
 
 # Communication Receiver:
 
-def pop_header(plaintext):
-    headerInPlaintext = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext) #search for an ip address
-    header = headerInPlaintext.group(0).decode('utf8') #extract the ip & in string
-    splitHeaderPlaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext) #separate the ip address from the payload
-    restPlaintext = splitHeaderPlaintext[1] #keep the payload
-    return (header, restPlaintext)
+def pop_IP(plaintext):
+    ipMatch = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext) #search for an ip address
+    ip = ipMatch.group(0).decode('utf8') #extract the ip & in string
+    ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext) #separate the ip address from the payload
+    ipMatch = ipMatch[1] #keep the payload
+    return (ip, ipMatch)
 
 def decrypt_the_cipher(crypt, cipher):
     plaintext = crypt.Decrypt(cipher)  # decrypt message
-    (ip, restPlaintext) = pop_header(plaintext)
-    return (ip, restPlaintext)
+    (ip, ipMatch) = pop_IP(plaintext)
+    return (ip, ipMatch)
 
 for i in range(len(listKeys)):
     (ip, message) = decrypt_the_cipher(listCrypts[i], message)
+    print(ip)
 
 messageDecrypted = message.decode('utf8')
 print(messageDecrypted)

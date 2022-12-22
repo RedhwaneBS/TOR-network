@@ -8,7 +8,14 @@ import time
 ip = sys.argv[1]
 port = int(sys.argv[2])
 
+
+
 client = Client_TOR(ip, port)
+data = [client.personal_ip, client.personal_port, client.crypt.public_key]
+
+with open('data.csv', 'a', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(data)
 
 # Ouverture du fichier en mode lecture
 with open('Contacts.csv', 'r') as fichier_csv:
