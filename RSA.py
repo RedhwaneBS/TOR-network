@@ -43,16 +43,16 @@ for i in range(len(listKeys)):
 
 # Communication Receiver:
 
-def pop_IP(plaintext):
+def pop_header(plaintext):
     headerInPlaintext = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext) #search for an ip address
-    ip = headerInPlaintext.group(0).decode('utf8') #extract the ip & in string
+    header = headerInPlaintext.group(0).decode('utf8') #extract the ip & in string
     splitHeaderPlaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext) #separate the ip address from the payload
     restPlaintext = splitHeaderPlaintext[1] #keep the payload
-    return (ip, restPlaintext)
+    return (header, restPlaintext)
 
 def decrypt_the_cipher(crypt, cipher):
     plaintext = crypt.Decrypt(cipher)  # decrypt message
-    (ip, restPlaintext) = pop_IP(plaintext)
+    (ip, restPlaintext) = pop_header(plaintext)
     return (ip, restPlaintext)
 
 for i in range(len(listKeys)):
