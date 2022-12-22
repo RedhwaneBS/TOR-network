@@ -11,8 +11,6 @@ class Client_TOR(Element):
 
     # List of contacts
     contact_list = Contact_list()
-    # List of nodes coordinates
-    list_of_nodes = [("127.0.0.1", 5003), ("127.0.0.1", 5004), ("127.0.0.1", 5005), ("127.0.0.1", 5006), ("127.0.0.1", 5007), ("127.0.0.1", 5008), ("127.0.0.1", 5009)]
 
     # Creat a message with a path of nodes
     def create_message(self, path, message):

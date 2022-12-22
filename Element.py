@@ -1,5 +1,7 @@
 import socket
 import threading
+import Cryptem
+import os
 
 # Node that can receive data from other nodes and send data to other nodes
 class Element:
@@ -9,13 +11,12 @@ class Element:
         self.personal_ip = personal_ip
         self.personal_port = personal_port
         self.input_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    cle_privee=  ""
-    cle_publique= ""
-
+        self.crypt = Cryptem.Crypt()
+        print(self.crypt.public_key)
     # Boolean to stop the program
     run = True
 
+    list_of_nodes = []
 
     # Thread that receive data
     def __handle_input_data(self, new_connexion_sock, new_connexion_ip):

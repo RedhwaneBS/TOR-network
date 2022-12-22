@@ -2,6 +2,7 @@ import socket
 import threading
 from Element import Element
 
+
 # TOR node that can receive data from other nodes and send data to other nodes/peers
 class Node_TOR(Element):
 
