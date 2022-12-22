@@ -4,7 +4,7 @@ import random
 from Contact import Contact
 from Contact_list import Contact_list
 from Element import Element
-from RSA import Crypt, Encryptor, Decryptor
+
 
 # TCP client that can send and reveive data via a Tor network
 class Client_TOR(Element):
@@ -18,8 +18,11 @@ class Client_TOR(Element):
     def create_message(self, path, message):
         nodes_string = ""
         for node in path:
+            print(nodes_string)
             nodes_string += f"{node[0]}//{node[1]} "
-        return f"{nodes_string}{message}"
+        nodes_string+=message
+        print(nodes_string)
+        return nodes_string
 
     # Return a random list of node to create a path
     def randomiser(self, liste):
@@ -75,7 +78,7 @@ class Client_TOR(Element):
                 send_message = True
 
             if send_message:
-                message_with_path_header = self.create_message(self.randomiser(self.list_of_nodes), message)
+                message_with_path_header = self.create_message((self.list_of_nodes), message)
                 print(message_with_path_header)
                 parsed_message = self.__parse_message(message_with_path_header)
                 ip, port = parsed_message[0].split("//")

@@ -10,6 +10,9 @@ class Element:
         self.personal_port = personal_port
         self.input_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+    cle_privee=  ""
+    cle_publique= ""
+
     # Boolean to stop the program
     run = True
 

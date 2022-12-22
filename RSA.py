@@ -30,7 +30,7 @@ def encrypt_the_message(message, i):
         message = message.encode('utf-8')
     encryptor = Encryptor(listKeys[i])  # crete Encryptor object with Receiver's public key
     cipher = encryptor.Encrypt(list_of_nodes[i][0].encode('utf8') + "//".encode('utf8') +
-                               str(list_of_nodes[i][1]).encode('utf8') + "###".encode('utf8') + message)  # encrypt a message
+                               str(list_of_nodes[i][1]).encode('utf8') + " ".encode('utf8') + message)  # encrypt a message
     return cipher
 
 
@@ -48,7 +48,7 @@ for i in range(len(listKeys)):
 def pop_IP(plaintext):
     ipMatch = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext) #search for an ip address
     ip = ipMatch.group(0).decode('utf8') #extract the ip & in string
-    ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}###', plaintext) #separate the ip address from the payload
+    ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext) #separate the ip address from the payload
     ipMatch = ipMatch[1] #keep the payload
     return (ip, ipMatch)
 
