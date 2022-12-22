@@ -10,10 +10,11 @@ class Node_TOR(Node):
     # Resend data to the next node
     def manage_data(self, data):
         print(data)
-        head, message = self.popIP(data)
-        ip, port = head.split("//", 1)
+        ip, port, message = self.pop_header(data)
+        ip = ip.decode()
+        port = port.decode()
         port = int(port)
-        print("ip: " + ip + " port: " + str(port) + " message: " + message)
+        print("ip: " + ip + " port: " + str(port) + " message: " + message.decode())
         self.send(ip, port, message)
 
     def encryption(self, data):
@@ -32,11 +33,15 @@ class Node_TOR(Node):
                 self.input_socket.close()
                 self.run = False
 
-    def popIP(self,plaintext):
-        print('plaintext :', plaintext)
-        ipMatch = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', plaintext)  # search for an Header address
-        Header = ipMatch.group(0).decode('utf8')  # extract the Header & in string$
-        
-        ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//.\d{0,9} ',plaintext)  # separate the Header address from the payload
-        ipMatch = ipMatch[1]  # keep the payload
-        return (Header, ipMatch)
+    def pop_header(self,plaintext):
+        headerInPlaintext = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext)  # search for a header
+        header = headerInPlaintext.group(0)  # extract the header
+        searchIP = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', header)
+        ip = searchIP.group(0)  # extract the header
+        port = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//', header)
+        port = port[1]  # extract the header
+        splitHeaderPlaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext,1)  # separate the header from the payload
+        restPlaintext = splitHeaderPlaintext[1]  # keep the payload
+        print("header: " , header , " ip: " ,ip , " port: " , port , " message: " , restPlaintext)
+        print("header: " + header.decode() + " ip: " + ip.decode() + " port: " + port.decode() + " rest: " + restPlaintext.decode())
+        return (ip, port, restPlaintext)

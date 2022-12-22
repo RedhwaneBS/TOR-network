@@ -10,10 +10,10 @@ import time
 #le client 2 se trouve à l'adresse 127.0.0.1 et au port 5004
 
 #dans la liste files_and_args, on met les fichiers à lancer et leurs arguments
-files_and_args = [("client.py",("127.0.0.1", "5001")),
+files_and_args = [("client_manager.py",("127.0.0.1", "5001")),
                   ("node.py",("127.0.0.1", "5002")),
                   ("node.py",("127.0.0.1", "5003")),
-                  ("client.py",("127.0.0.1", "5004"))]
+                  ("client_manager.py",("127.0.0.1", "5004"))]
 
 #on lance les fichiers dans la liste files_and_args avec leurs arguments respectifs dans des processus séparés
 subprocesses=[]
