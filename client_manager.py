@@ -22,7 +22,7 @@ with open('Contacts.csv', 'r') as fichier_csv:
         tuple_ligne = tuple(ligne)
         client.new_contact(tuple_ligne)
 
-time.sleep(10)
+time.sleep(5)
 
 with open('data.csv', 'r') as fichier_csv:
     # Initialisation du gestionnaire de fichier CSV
@@ -33,9 +33,10 @@ with open('data.csv', 'r') as fichier_csv:
         ligne = [int(x) if x.isdigit() else x for x in ligne]
         # Stockage de la ligne dans un tuple
         tuple_ligne = tuple(ligne)
-        print(tuple_ligne)
-        client.list_of_nodes.append(tuple_ligne)
+        if tuple_ligne != ():
+            client.list_of_nodes.append(tuple_ligne)
 
+print("Welcome to the TOR client! You can now send messages to your contacts.")
 
 client.start()
 

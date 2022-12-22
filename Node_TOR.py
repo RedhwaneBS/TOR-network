@@ -6,6 +6,8 @@ from Element import Element
 # TOR node that can receive data from other nodes and send data to other nodes/peers
 class Node_TOR(Element):
 
+    list_of_nodes = []
+
     # Resend data to the next node
     def manage_data(self, data):
         print(data)
@@ -14,6 +16,8 @@ class Node_TOR(Element):
         port = int(port)
         print("ip: " + ip + " port: " + str(port) + " message: " + message)
         self.send(ip, port, message.encode())
+
+
 
     # Allow to stop the program by typing "stop" in the console
     def take_input(self):

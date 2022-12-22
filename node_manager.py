@@ -25,8 +25,8 @@ with open('data.csv', 'r') as fichier_csv:
         ligne = [int(x) if x.isdigit() else x for x in ligne]
         # Stockage de la ligne dans un tuple
         tuple_ligne = tuple(ligne)
-        print(tuple_ligne)
-        node.list_of_nodes.append(tuple_ligne)
+        if tuple_ligne != ():
+            node.list_of_nodes.append(tuple_ligne)
 node.start()
 
 
