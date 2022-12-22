@@ -4,8 +4,7 @@ class Contact:
 
     #Creation of a new contact
     def __init__(self,port,ip='localhost',name=""):
-
-            self.name = name
-            self.ip = ip
-            self.port = port
-            self.public_key = Crypt().public_key
+        self.name = name
+        self.ip = ip
+        self.port = port
+        self.public_key = Crypt().public_key

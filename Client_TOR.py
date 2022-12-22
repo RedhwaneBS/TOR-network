@@ -3,6 +3,8 @@ import socket
 import threading
 import random
 import re
+import pickle
+import time
 
 from Crypto.Cipher import AES
 
@@ -14,12 +16,19 @@ import random
 
 # TCP client that can send and receive data via a Tor network
 class Client_TOR(Element):
-    # List of contacts
+
+    # Initialize the client with himself in his list of peers and the ip/port of the enter node of the Tor network
+    def __init__(self, personal_ip, personal_port, connexion_ip, connexion_port):
+        super().__init__(personal_ip, personal_port)
+        # Coordinates of the enter node of the Tor network
+        self.connexion_tuple = (connexion_ip, connexion_port)
+        self.list_of_clients = [(self.personal_ip, self.personal_port,self.crypt.public_key)]
+
+
+    # List of contacts to allow to send message easly by name
     contact_list = Contact_list()
     UsernameList = []
     PasswordList = []
-    # List of nodes coordinates
-    list_of_nodes = []
 
     # Creat a message with a path of nodes
     def create_message(self, path, message):
@@ -45,7 +54,19 @@ class Client_TOR(Element):
 
     # Print the data received
     def manage_data(self, data):
-        print(data)
+        print("manage data")
+        header_test = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+        if header_test != None: 
+            header = header_test.group(0)  # extract the header
+            if header.decode() == "300.0.0.0//0 ":
+                print("header == 300.0.0.0//0")
+                body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+                list_of_nodes = body[1]  # extract the list of nodes
+                self.list_of_nodes = pickle.loads(list_of_nodes)  # load the list of nodes
+                print("List of nodes received")
+                print(self.list_of_nodes)
+        else:
+            print(data)
 
     # Parse the input to send data to another contact
     def take_input(self):
@@ -120,8 +141,12 @@ class Client_TOR(Element):
     def send_bytes(self, message):
         message_with_path_header = self.create_message_from_bytes(self.randomiser(self.list_of_nodes), message)
         s.send(message_with_path_header)
+
+
     def send_string_bytes(self, message):
         self.send_bytes(message.encode())
+
+
     def receive(self):
         char = ''
         message = ''
@@ -130,13 +155,16 @@ class Client_TOR(Element):
             message += char
         return message
 
+
     def close(self):
         s.close()
         return
 
+
     def PasswordCreate(self):
         random_key = os.urandom(16)
         return random_key
+
 
     def connection_to_server(self):
         while self.run:
@@ -189,6 +217,7 @@ class Client_TOR(Element):
             self.close()
             self.run = False
 
+
     def popIP(self,plaintext):
         print('plaintext :', plaintext)
         ipMatch = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', plaintext)  # search for an ip address
@@ -198,3 +227,20 @@ class Client_TOR(Element):
         ipMatch = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}###',plaintext)  # separate the ip address from the payload
         ipMatch = ipMatch[1]  # keep the payload
         return (ip, ipMatch)
+
+
+    def sharing_peers(self):
+        return super().sharing_peers()
+    
+    def connect_to_TOR(self):
+        socket_entering_node = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        socket_entering_node.connect(self.connexion_tuple)
+        socket_entering_node.send("300.0.0.0//0 ".encode() + pickle.dumps(self.list_of_clients[0]))
+        socket_entering_node.close()
+
+
+    def start(self):
+        super().start()
+        time.sleep(1)
+        asking_nodes_thread = threading.Thread(target=self.connect_to_TOR)
+        asking_nodes_thread.start()

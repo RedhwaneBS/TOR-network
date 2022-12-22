@@ -7,13 +7,17 @@ import time
 
 ip = sys.argv[1]
 port = int(sys.argv[2])
+connexion_ip = sys.argv[3]
+connexion_port = int(sys.argv[4])
 
-client = Client_TOR(ip, port)
+client = Client_TOR(ip, port, connexion_ip, connexion_port)
 data = [client.personal_ip, client.personal_port, client.crypt.public_key]
+
+""""
 with open('public_keys.csv', 'a', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(data)
-
+"""
 # Ouverture du fichier en mode lecture
 with open('Contacts.csv', 'r') as fichier_csv:
     # Initialisation du gestionnaire de fichier CSV
@@ -28,6 +32,7 @@ with open('Contacts.csv', 'r') as fichier_csv:
 
 
 time.sleep(5)
+"""
 with open('public_keys.csv', 'r') as fichier_csv:
     # Initialisation du gestionnaire de fichier CSV
     gestionnaire_csv = csv.reader(fichier_csv, delimiter=',')
@@ -39,5 +44,6 @@ with open('public_keys.csv', 'r') as fichier_csv:
         tuple_ligne = tuple(ligne)
         if tuple_ligne != ():
             client.list_of_nodes.append(tuple_ligne)
+"""
 print("Welcome to the TOR client! You can now send messages to your contacts.")
 client.start()

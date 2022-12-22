@@ -2,6 +2,7 @@ import socket
 import threading
 import Cryptem
 import os
+import re
 
 # Node that can receive data from other nodes and send data to other nodes
 class Element:
@@ -16,8 +17,10 @@ class Element:
 
     # Boolean to stop the program
     run = True
+    # List of nodes TOR to create paths
     list_of_nodes = []
-
+    # List of peers conncected to the network
+    list_of_clients = []
 
     # Thread that receive data
     def __handle_input_data(self, new_connexion_sock, new_connexion_ip):
@@ -71,9 +74,15 @@ class Element:
     def take_input(self):
         raise NotImplementedError
 
-    # Thread that shar coordonates from nodes in its node list
-    def sharing_node(self):
-        pass
+    # Thread that share coordonates from nodes in its node list
+    def sharing_peers(self, ip, port):
+        if self.list_of_clients != []:
+            share_list = ["AAAYYAAAAAA"]
+            for peer in self.list_of_clients:
+                share_list.append(peer)
+            sharing_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sharing_socket.connect((ip, port))
+            sharing_socket.send(str(share_list).encode())
 
     # Start the node
     def start(self):
@@ -86,3 +95,16 @@ class Element:
         receive_thread = threading.Thread(target=self.__send_data)
         receive_thread.start()
 
+    # Parse the header
+    def pop_header(self,plaintext):
+        headerInPlaintext = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9}', plaintext)  # search for a header
+        header = headerInPlaintext.group(0)  # extract the header
+        searchIP = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}', header)
+        ip = searchIP.group(0)  # extract the IP
+        port = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//', header)
+        port = port[1]  # extract the port
+        splitHeaderPlaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext,1)  # separate the header from the payload
+        restPlaintext = splitHeaderPlaintext[1]  # keep the payload
+        print("header: " , header , " ip: " ,ip , " port: " , port , " message: " , restPlaintext)
+        #print("header: " + header.decode() + " ip: " + ip.decode() + " port: " + port.decode() + " rest: " + restPlaintext.decode())
+        return (ip, port, restPlaintext)
