@@ -13,4 +13,3 @@ start cmd /k "python client_manager.py 127.0.0.1 6004 127.0.0.1 5004"
 
 
 
-rem enter this in client 1 for test: 127.0.0.1//5002 test
