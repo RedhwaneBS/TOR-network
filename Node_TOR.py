@@ -41,7 +41,6 @@ class Node_TOR(Element):
             self.list_of_clients += clients
         else:
             port = int(port)
-            #print("ip: " + ip + " port: " + str(port) + " message: " + str(message.decode()))
             self.send(ip, port, message)
 
     # Send the list of nodes to a client
@@ -71,7 +70,7 @@ class Node_TOR(Element):
                     self.send(node[0], int(node[1]),"300.0.0.0//1 ".encode() + pickle.dumps(share_list))
             if len(self.list_of_clients) > 5:
                 self.list_of_clients = random.sample(self.list_of_clients, 3)
-            time.sleep(2)
+            time.sleep(1)
             
 
 
@@ -85,7 +84,7 @@ class Node_TOR(Element):
                     self.send(client[0], int(client[1]),"300.0.0.0//1 ".encode() + pickle.dumps(share_list))
             if len(self.list_of_clients) > 5:
                 self.list_of_clients = random.sample(self.list_of_clients, 3)
-            time.sleep(2)
+            time.sleep(1)
             
 
 

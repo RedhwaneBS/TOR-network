@@ -43,7 +43,7 @@ class Element:
     # Thread that receives data from other peers simultaneously
     def __receive_data(self):
         # Queue for connection
-        self.input_socket.listen(10)
+        self.input_socket.listen(20)
         while self.run:
             # New connexion
             new_connexion_sock, new_connexion_ip = self.input_socket.accept()

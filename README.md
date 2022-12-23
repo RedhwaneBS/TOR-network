@@ -32,6 +32,7 @@ Then you can send a message to a terminal via the command line
     exemple :
     YenNhi Hello!
 ```
+If it crash you must probably relaunch it and wait longer befer sending a message
 
 
 ## How to run the code manually
