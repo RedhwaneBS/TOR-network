@@ -10,33 +10,45 @@ Repository for the final project for the "Communication networks : protocols and
 The code was tested on Windows and with  python  version 3.10.9 and 3.9.15. 
 
 * * *
-
-## Assumptions
-Every client knows the adress and the public key of every other client. 
-
 ## How to install
 Run this command in a terminal
 ```python
 pip install -r requirements.txt
 ```
 
-## How to run the code 
-You have to run the nodes first. To run a node open a terminal by node and enter this command:
-```
-py node.py [ip] [port]
-```
-
-Then run the clients with
-```
-py clients.py [ip] [port] [ip of a node] [port of a node]
-```
-
 ## How to test 
-Run the test.bat or the test.sh (respectively if you are under Windows or Linux) and enter this in the stdin of the client situated on the port 6001  for test: 
+Run the test.bat or the test.sh (respectively if you are under Windows or Linux) then wait a few seconds to let the network initialisz himself.
+
+After a certain time you il see :
+
 ```
-127.0.0.1//6002 test 
+You are registred as : [the name corresponding to your terminal] with the ip : 127.0.0.1 and the port : [your port]
 ```
 
+Then you can send a message to a terminal via the command line
+```
+[name] [message]
+
+    exemple :
+    YenNhi Hello!
+```
+If it crash you must probably relaunch it and wait longer befer sending a message
+
+
+## How to run the code manually
+
+You can run a TOR network with :
+```
+py node_manager.py [ip_node1] [port_node1] [ip_node2] [port_node2] [ip_node3] [port_node3] [ip_node] [port_node4].....
+```
+You can chose the number of node
+
+
+Then run a client with
+```
+py client_manager.py [ip] [port] [ip of the entery node] [port of the entery node]
+```
+Note that you need an existing node to enter the network
 
 
 
