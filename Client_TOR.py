@@ -236,3 +236,6 @@ class Client_TOR(Element):
         super().start()
         asking_nodes_thread = threading.Thread(target=self.connect_to_TOR)
         asking_nodes_thread.start()
+        for contact in self.contact_list.contacts:
+            if contact.port == self.personal_port and contact.port == self.personal_port:
+                print("You are registred as : " + contact.name + " with the ip : " + contact.ip + " and the port : " + str(contact.port))
