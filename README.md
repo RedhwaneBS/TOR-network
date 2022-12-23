@@ -17,7 +17,7 @@ Every client knows the adress and the public key of every other client.
 ## How to install
 Run this command in a terminal
 ```python
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ## How to run the code 
