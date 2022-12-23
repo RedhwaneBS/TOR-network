@@ -117,8 +117,7 @@ class ClientTCP(Node):
         return nodes_string_bytes + message
 
     def send_bytes(self, message, ip, port):
-        message = (ip + "//" + str(port) + " ").encode() + (
-                self.personal_ip + "//" + str(self.personal_port) + " ").encode() + message
+        message = (ip + "//" + str(port) + " ").encode() + (self.personal_ip + "//" + str(self.personal_port) + " ").encode() + message
         message_with_path_header = self.create_message_from_bytes(self.randomiser(self.list_of_nodes), message)
         print('message with path:', message_with_path_header)
         ip, port, message = self.pop_header(message_with_path_header)
