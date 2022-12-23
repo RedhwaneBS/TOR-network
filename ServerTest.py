@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import pickle
 import re
 
 # Code highly inspired from this github : github.com/abhishekkrthakur/isear/blob/master/server.py
@@ -9,29 +10,48 @@ import select, socket, sys
 import socket, time, string
 import random
 from Crypto.Cipher import AES
-from Element import Node
-from Client_TOR import ClientTCP
+from Element import Element
+from Client_TOR import Client_TOR
 
 # things to begin with
-userNameList = []
-passwordList = []
 
 
-class Server(ClientTCP):
 
-    def __init__(self, personal_ip, personal_port, message="".encode()):
-        self.personal_ip = personal_ip
-        self.personal_port = personal_port
-        self.input_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.message = message
-        self.main()
+class Server(Client_TOR):
+
+    def __init__(self, personal_ip, personal_port, connexion_ip, connexion_port):
+        super().__init__(personal_ip, personal_port)
+        # Coordinates of the enter node of the Tor network
+        self.connexion_tuple = (connexion_ip, connexion_port)
+        self.list_of_clients = [(self.personal_ip, self.personal_port,self.crypt.public_key)]
+        self.userNameList = []
+        self.passwordList = []
+
 
     def random_token_generator(self, size=16, chars=string.ascii_uppercase + string.digits):
         print('begin random_token_generator')
         for i in range(size):
             return ''.join(random.choice(chars))
 
+    def manage_data(self, data):
+        header_test = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+        if header_test != None:
+            header = header_test.group(0)  # extract the header
+            if header.decode() == "300.0.0.0//0 ":
+                body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+                list_of_nodes = body[1]  # extract the list of nodes
+                self.list_of_nodes = pickle.loads(list_of_nodes)  # load the list of nodes
+                print("List of nodes received")
+            if header.decode() == "300.0.0.0//1 ":
+                body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+                list_of_clients = body[1]  # extract the list of clients
+                self.list_of_clients += pickle.loads(list_of_clients)  # load the list of clients
+            if header.decode() == "300.0.0.0//2 ":
+                pass
+
+        else:
+            print(data.decode())
+            pass
     def main(self):
         print("Server started")
         global server_socket
@@ -69,19 +89,19 @@ class Server(ClientTCP):
         if loginOrRegister == '0':
             print("Creating new user")
             self.send_bytes("Registering...".encode(), ip_client, port_client)
-            if username in userNameList:
+            if username in self.userNameList:
                 print("Username already in use")
             else:
-                userNameList.append(username)
-                passwordList.append(password)
+                self.userNameList.append(username)
+                self.passwordList.append(password)
                 print("User created")
 
         elif loginOrRegister == '1':
             print("Login process")
             print("Logging in...")
 
-            if (username in userNameList and password in passwordList and userNameList.index(
-                    username) == passwordList.index(password)):
+            if (username in self.userNameList and password in self.passwordList and self.userNameList.index(
+                    username) == self.passwordList.index(password)):
                 existence = '0'
             else:
                 existence = '1'

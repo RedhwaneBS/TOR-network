@@ -16,7 +16,6 @@ from Cryptem import Encryptor
 
 # TCP client that can send and receive data via a Tor network
 class Client_TOR(Element):
-
     # Initialize the client with himself in his list of peers and the ip/port of the enter node of the Tor network
     def __init__(self, personal_ip, personal_port, connexion_ip, connexion_port):
         super().__init__(personal_ip, personal_port)
@@ -33,9 +32,13 @@ class Client_TOR(Element):
 
     # Create a message with a path of nodes, form of list_of_nodes = [('127.0.0.1', 5003, key), ('127.0.0.1', 5004, key)]
     def create_message(self, path, message):
-        if isinstance(message, str):
-            message = message.encode('utf-8')
+        boole = True
         for node in path[::-1]:     # encryption from the destination to the first node of the path
+            print(node[0], node[1])
+            if boole:
+                message = message.encode('utf-8')
+                message = (self.personal_ip + "//" + str(self.personal_port) + " ").encode('utf-8') + message
+                boole = False
             encryptor = Encryptor(node[2])
             cipher = encryptor.Encrypt(message)
             header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
@@ -43,43 +46,8 @@ class Client_TOR(Element):
         return cipher
 
 
-    # Return a random list of nodes to create a path
-    def randomiser(self, liste):
-        nombre = random.randint(1, len(liste) - 1) # draw a random number between 0 & length of the list
-        new_liste = random.sample(liste, nombre) # return this number of elements of the list
-
-from Crypto.Cipher import AES
-
-from Contact import Contact
-from Contact_list import Contact_list
-from Element import Node
-import random
-
-
 # TCP client that can send and receive data via a Tor network
-class ClientTCP(Node):
-    # List of contacts
-    contact_list = Contact_list()
-    UsernameList = []
-    PasswordList = []
-    # List of nodes coordinates
-    list_of_nodes = [("127.0.0.1", 6003), ("127.0.0.1", 6004), ("127.0.0.1", 6005), ("127.0.0.1", 6006),
-                     ("127.0.0.1", 6007), ("127.0.0.1", 6008), ("127.0.0.1", 6009)]
-
-    def __init__(self, personal_ip, personal_port, message="".encode()):
-        self.personal_ip = personal_ip
-        self.personal_port = personal_port
-        self.personal_port_server = 7001
-        self.input_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.message = message
-
-    # Creat a message with a path of nodes
-    def create_message(self, path, message):
-        nodes_string = ""
-        for node in path:
-            nodes_string += f"{node[0]}//{node[1]} "
-        return f"{nodes_string}{message}"
+# Creat a message with a path of nodes
 
     # Return a random list of node to create a path
     def randomiser(self, liste):
@@ -98,6 +66,7 @@ class ClientTCP(Node):
 
     # Print the data received
     def manage_data(self, data):
+        print("manage data",data)
         header_test = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
         if header_test != None: 
             header = header_test.group(0)  # extract the header
@@ -110,9 +79,37 @@ class ClientTCP(Node):
                 body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
                 list_of_clients = body[1]  # extract the list of clients
                 self.list_of_clients += pickle.loads(list_of_clients)  # load the list of clients
+
+            if (header_test == re.search(b'"300.0.0.0//2 "', data)!=None) :
+
+                ip_source = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)
+                ip_source = ip_source.group(0)
+
+                restplaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+                restplaintext = restplaintext[1]
+
+                header_server = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)
+                header_source = header_server.group(0)
+
+                message = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+                message = message[1]
+
+                self.authentification(message)
+
         else:
             print(data.decode())
             pass
+
+    def authentification(self, message):
+        print("Authentification begins")
+        message = message.decode()
+        message = message.split(";")
+        Ordre = message.split(";", 1)
+        if Ordre == 1:
+            self.UsernameList.append(message[1])
+            self.PasswordList.append(message[2])
+            print("New user added")
+
 
     # Parse the input to send data to another contact
     def take_input(self):
@@ -148,13 +145,17 @@ class ClientTCP(Node):
 
             if send_message:
                 if data == "Server Request":
-                    while self.run:
-                        # Thread creation
-                        print("thread created for server request")
-                        new_connexion_thread = threading.Thread(target=self.connection_to_server())
-                        new_connexion_thread.start()
+                    message = input("Server command: ")
+                    message = ("300.0.0.0//2" + " ") + message
+                    message_with_path_header = self.create_message(self.randomiser(self.list_of_nodes), message)
+                    print("message with path header created", message_with_path_header)
+                    parsed_message = pop_header(message_with_path_header)
+                    (ip, port, message) = parsed_message
+                    print('ip :', ip.decode(), 'port :', port.decode())
+                    self.send(ip, int(port), message)
                 else:
                     message_with_path_header = self.create_message(self.randomiser(self.list_of_nodes), message)
+                    print("message with path header created", message_with_path_header)
                     parsed_message = pop_header(message_with_path_header)
                     (ip, port, message) = parsed_message
                     print('ip :',ip.decode(), 'port :',port.decode())
@@ -180,29 +181,6 @@ class ClientTCP(Node):
             nodes_string += f"{node[0]}//{node[1]} "
         nodes_string_bytes = nodes_string.encode()
         return nodes_string_bytes + message
-
-
-    def send_bytes(self, message):
-        message_with_path_header = self.create_message_from_bytes(self.randomiser(self.list_of_nodes), message)
-        s.send(message_with_path_header)
-
-
-    def send_string_bytes(self, message):
-        self.send_bytes(message.encode())
-
-
-    def receive(self):
-        char = ''
-        message = ''
-        while char != '\n':
-            char = (s.recv(1)).decode()
-            message += char
-        return message
-
-
-    def close(self):
-        s.close()
-        return
 
 
     def send_bytes(self, message, ip, port):
@@ -300,6 +278,8 @@ class ClientTCP(Node):
         socket_entering_node.close()
 
 
+
+
     def start(self):
         super().start()
         time.sleep(1)
@@ -325,4 +305,4 @@ class ClientTCP(Node):
         splitHeaderPlaintext = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', plaintext,
                                         1)  # separate the header from the payload
         restPlaintext = splitHeaderPlaintext[1]  # keep the payload
-        return (ip, port, restPlaintext)
+        return ip, port, restPlaintext
