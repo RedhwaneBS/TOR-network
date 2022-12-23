@@ -37,10 +37,11 @@ class Client_TOR(Element):
             message = message.encode('utf-8')
         for node in path[::-1]:     # encryption from the destination to the first node of the path
             encryptor = Encryptor(node[2])
-            cipher = encryptor.Encrypt(message)
+            encrypted_message = encryptor.Encrypt(message)
             header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
-            cipher = header+cipher
-        return cipher
+            final_message = header+encrypted_message
+            message = final_message
+        return final_message
 
 
     # Return a random list of nodes to create a path
