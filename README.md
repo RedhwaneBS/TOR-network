@@ -1,4 +1,4 @@
-# Titre
+# TOR PROJECT
 
 Authors: 
 - Redhwane Ben Salem - redhwane.ben.salem@ulb.be 
