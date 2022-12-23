@@ -234,6 +234,5 @@ class Client_TOR(Element):
 
     def start(self):
         super().start()
-        time.sleep(1)
         asking_nodes_thread = threading.Thread(target=self.connect_to_TOR)
         asking_nodes_thread.start()

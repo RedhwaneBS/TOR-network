@@ -38,7 +38,6 @@ class Node_TOR(Element):
         elif ip == "300.0.0.0" and port == "1":
             clients = pickle.loads(message)
             self.list_of_clients += clients
-            print("Clients shared")
         else:
             port = int(port)
             print("ip: " + ip + " port: " + str(port) + " message: " + str(message.decode()))
@@ -65,26 +64,27 @@ class Node_TOR(Element):
     # Thread that share coordonates from nodes in its node list
     def sharing_contacts_between_nodes(self):
         while self.run:
-            time.sleep(10)
             if self.list_of_clients != []:
-                share_list = random.sample(self.list_of_clients,len(self.list_of_clients))
+                share_list = random.sample(self.list_of_clients,min(len(self.list_of_clients),2))
                 for node in self.list_of_nodes:
                     self.send(node[0], int(node[1]),"300.0.0.0//1 ".encode() + pickle.dumps(share_list))
             if len(self.list_of_clients) > 5:
                 self.list_of_clients = random.sample(self.list_of_clients, 3)
+            time.sleep(2)
             
 
 
     # Thread that send clients coordonates to the other clients
     def sharing_contacts_between_clients(self):
         while self.run:
-            time.sleep(5)
+
             if self.list_of_clients != []:
-                share_list = random.sample(self.list_of_clients,len(self.list_of_clients))
+                share_list = random.sample(self.list_of_clients,min(len(self.list_of_clients),2))
                 for client in share_list:
                     self.send(client[0], int(client[1]),"300.0.0.0//1 ".encode() + pickle.dumps(share_list))
             if len(self.list_of_clients) > 5:
                 self.list_of_clients = random.sample(self.list_of_clients, 3)
+            time.sleep(2)
             
 
 
