@@ -3,6 +3,50 @@ import socket
 import threading
 import random
 import re
+import pickle
+import time
+
+from Crypto.Cipher import AES
+from Contact import Contact
+from Contact_list import Contact_list
+from Element import Element
+from RSA import pop_header
+import random
+from Cryptem import Encryptor
+
+# TCP client that can send and receive data via a Tor network
+class Client_TOR(Element):
+
+    # Initialize the client with himself in his list of peers and the ip/port of the enter node of the Tor network
+    def __init__(self, personal_ip, personal_port, connexion_ip, connexion_port):
+        super().__init__(personal_ip, personal_port)
+        # Coordinates of the enter node of the Tor network
+        self.connexion_tuple = (connexion_ip, connexion_port)
+        self.list_of_clients = [(self.personal_ip, self.personal_port,self.crypt.public_key)]
+
+
+    # List of contacts to allow to send message easly by name
+    contact_list = Contact_list()
+    UsernameList = []
+    PasswordList = []
+
+
+    # Create a message with a path of nodes, form of list_of_nodes = [('127.0.0.1', 5003, key), ('127.0.0.1', 5004, key)]
+    def create_message(self, path, message):
+        if isinstance(message, str):
+            message = message.encode('utf-8')
+        for node in path[::-1]:     # encryption from the destination to the first node of the path
+            encryptor = Encryptor(node[2])
+            cipher = encryptor.Encrypt(message)
+            header = node[0].encode('utf8') + "//".encode('utf8') + str(node[1]).encode('utf8') + " ".encode('utf8')
+            cipher = header+cipher
+        return cipher
+
+
+    # Return a random list of nodes to create a path
+    def randomiser(self, liste):
+        nombre = random.randint(1, len(liste) - 1) # draw a random number between 0 & length of the list
+        new_liste = random.sample(liste, nombre) # return this number of elements of the list
 
 from Crypto.Cipher import AES
 
@@ -54,11 +98,24 @@ class ClientTCP(Node):
 
     # Print the data received
     def manage_data(self, data):
-        pass
+        header_test = re.search(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+        if header_test != None: 
+            header = header_test.group(0)  # extract the header
+            if header.decode() == "300.0.0.0//0 ":
+                body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+                list_of_nodes = body[1]  # extract the list of nodes
+                self.list_of_nodes = pickle.loads(list_of_nodes)  # load the list of nodes
+                print("List of nodes received")
+            if header.decode() == "300.0.0.0//1 ":
+                body = re.split(b'\d{0,9}\.\d{0,9}\.\d{0,9}\.\d{0,9}//\d{0,9} ', data)  # search for a header
+                list_of_clients = body[1]  # extract the list of clients
+                self.list_of_clients += pickle.loads(list_of_clients)  # load the list of clients
+        else:
+            print(data.decode())
+            pass
 
     # Parse the input to send data to another contact
     def take_input(self):
-
         while self.run:
             head_type = 0
             send_message = False
@@ -79,7 +136,7 @@ class ClientTCP(Node):
                     self.new_contact(tuple_contact)
 
                 else:
-                    print(head + " is not in your contact list or is an ivalid input")
+                    print(head + " is not in your contact list or is an invalid input")
                     print(
                         "Please enter a valid input or add the contact to your contact list using the command 'add' [port] [ip] [name]")
             elif head_type != 2:
@@ -91,14 +148,17 @@ class ClientTCP(Node):
 
             if send_message:
                 if data == "Server Request":
-                    self.connection_to_server()
+                    while self.run:
+                        # Thread creation
+                        print("thread created for server request")
+                        new_connexion_thread = threading.Thread(target=self.connection_to_server())
+                        new_connexion_thread.start()
                 else:
                     message_with_path_header = self.create_message(self.randomiser(self.list_of_nodes), message)
-                    print('message :', message_with_path_header)
-                    parsed_message = self.__parse_message(message_with_path_header)
-                    ip, port = parsed_message[0].split("//")
-                    print('ip :', ip, 'port :', port, 'data :', parsed_message[1])
-                    self.send(ip, int(port), parsed_message[1].encode())
+                    parsed_message = pop_header(message_with_path_header)
+                    (ip, port, message) = parsed_message
+                    print('ip :',ip.decode(), 'port :',port.decode())
+                    self.send(ip, int(port), message)
 
     # When user enter a message he must do it with the structure "destination_name message"
     # This function parse the message to separate the name of the destination and the message content
@@ -108,6 +168,11 @@ class ClientTCP(Node):
         return (splitted_token[0], message[split_index + 1:])
 
     # Connection to the server functions
+    def connect(self, HostIp, Port):
+        global s
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((HostIp, Port))
+        return
 
     def create_message_from_bytes(self, path, message):
         nodes_string = ""
@@ -115,6 +180,30 @@ class ClientTCP(Node):
             nodes_string += f"{node[0]}//{node[1]} "
         nodes_string_bytes = nodes_string.encode()
         return nodes_string_bytes + message
+
+
+    def send_bytes(self, message):
+        message_with_path_header = self.create_message_from_bytes(self.randomiser(self.list_of_nodes), message)
+        s.send(message_with_path_header)
+
+
+    def send_string_bytes(self, message):
+        self.send_bytes(message.encode())
+
+
+    def receive(self):
+        char = ''
+        message = ''
+        while char != '\n':
+            char = (s.recv(1)).decode()
+            message += char
+        return message
+
+
+    def close(self):
+        s.close()
+        return
+
 
     def send_bytes(self, message, ip, port):
         message = (ip + "//" + str(port) + " ").encode() + (self.personal_ip + "//" + str(self.personal_port) + " ").encode() + message
@@ -147,19 +236,15 @@ class ClientTCP(Node):
         random_key = os.urandom(16)
         return random_key
 
+
     def connection_to_server(self):
         while self.run:
-            print("connection to server")
-            print("My attributes are : ", self.personal_ip, self.personal_port)
             ip_server = "127.0.0.1"
-            port_server = 17088
-            self.connect(ip_server, port_server)
-            print("connected to server")
-            message_decode = self.receive(s).decode()
-            print(message_decode)
-            print("received")
+            port_server = 17092
+            self.connect(ip_server, 17092)
+            print(self.receive())
             username = input("Enter your username: ")
-            self.send_string_bytes(username, ip_server, port_server)
+            self.send_string_bytes(username)
             if username in self.UsernameList:
                 print("Username already exists")
                 index = self.UsernameList.index(username)
@@ -168,21 +253,22 @@ class ClientTCP(Node):
                 password = self.PasswordCreate()
                 self.UsernameList.append(username)
                 self.PasswordList.append(password)
+
             print("Password: ", password)
-            self.send_bytes(password, ip_server, port_server)
-            print(self.receive(s))
+            self.send_bytes(password)
+            print(self.receive())
             option = input('Type 1 for login or 0 for register: ')
-            self.send_string_bytes(option, ip_server, port_server)
+            self.send_string_bytes(option)
             if option == '0':
                 print('Registration sent')
             elif option == '1':
-                existence = self.receive(s)
-                existence = existence.decode()
+                existence = self.receive()
+                existence = existence.strip('\n')
                 print('Existence :', existence)
                 false = '1'
                 if existence == false:
                     print("Username or password is incorrect")
-                    self.close(s)
+                    self.close()
                 else:
                     # Partie token
                     random_token = s.recv(1024)
@@ -193,14 +279,33 @@ class ClientTCP(Node):
                     ciphertext, tag = obj.encrypt_and_digest(password)
 
                     # Envoi du token chiffré
-                    self.send_bytes(ciphertext, ip_server, port_server)
+                    self.send_bytes(ciphertext)
                     print('cipher sent : ', ciphertext)
-                    auth_stat = self.receive(s)
+                    auth_stat = self.receive()
                     auth_stat = auth_stat.strip('\n')
                     print('auth_stat :', auth_stat)
 
-        self.close(s)
-        self.run = False
+            self.close()
+            self.run = False
+
+
+
+    def sharing_contacts(self):
+        return super().sharing_contacts()
+
+    def connect_to_TOR(self):
+        socket_entering_node = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        socket_entering_node.connect(self.connexion_tuple)
+        socket_entering_node.send("300.0.0.0//0 ".encode() + pickle.dumps(self.list_of_clients[0]))
+        socket_entering_node.close()
+
+
+    def start(self):
+        super().start()
+        time.sleep(1)
+        asking_nodes_thread = threading.Thread(target=self.connect_to_TOR)
+        asking_nodes_thread.start()
+
 
     def __handle_input_data_from_server(self, new_connexion_sock, new_connexion_ip):
         while self.run:
@@ -221,29 +326,3 @@ class ClientTCP(Node):
                                         1)  # separate the header from the payload
         restPlaintext = splitHeaderPlaintext[1]  # keep the payload
         return (ip, port, restPlaintext)
-
-    # Gestion des threads
-    def __receive_data_from_server(self):
-        # Queue for connection
-        self.input_socket.listen(10)
-        while self.run:
-            # New connexion
-            new_connexion_sock, new_connexion_ip = self.server_socket.accept()
-            # Thread creation
-            new_connexion_thread = threading.Thread(
-                target=self.__handle_input_data_from_server(), args=(new_connexion_sock, new_connexion_ip))
-            new_connexion_thread.start()
-
-    def start(self):
-
-        self.input_socket.bind((self.personal_ip, self.personal_port))
-        print('Node started ' + " ip : " + self.personal_ip + " port : " + str(self.personal_port))
-        receive_thread = threading.Thread(target=self.__receive_data)
-        receive_thread.start()
-
-        receive_thread = threading.Thread(target=self.__send_data)
-        receive_thread.start()
-
-        self.server_socket.bind((self.personal_ip, self.personal_port_server))
-        server_thread = threading.Thread(target=self.__receive_data_from_server())
-        server_thread.start()
